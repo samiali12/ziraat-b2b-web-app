@@ -54,29 +54,16 @@ const userLogout = asyncErrorHandler(async (request, response, next) => {
 })
 
 
-const authroizationRoles = (...roles) => {
-
-    return (request, response, next) => {
-
-       const {userRole} = request.body
-
-        
-    }
+const authorizationRoles = (request, response, next) => {
+    return(next(new ErrorHandler("Login to accffffess. ", 401)))
 }
 
 
-const forgetPassword = asyncErrorHandler(async (request, response, next) => {
-
-    // Extract token and new password from request body
-    const { token, password } = req.body;
-
-})
 
 // Export the controller functions
 module.exports = {
     userRegistration,
     userLogin,
     userLogout,
-    forgetPassword,
-    authroizationRoles,
+    authorizationRoles,
 }

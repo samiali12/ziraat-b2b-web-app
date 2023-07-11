@@ -12,7 +12,6 @@ const sendToken = (user, statusCode, response) => {
         sucess:true, 
         user,
         token,
-        message: "Token Safe Successfully"
     })
 }
 module.exports = {sendToken}
