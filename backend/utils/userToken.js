@@ -1,15 +1,18 @@
-const sendToken = (user, statusCode, response) => {
+
+const sendToken = (user, statusCode, response, message) => {
+
     const token = user.getJWTToken()
 
     const options = {
         expires: new Date(
-            Date.now() + process.env.COOKIE_EXPIRE_DATE * 24 * 60 * 60 * 1000
+            Date.now() + process.env.COOKIE_EXPIRE_DATE * 24 * 60 * 60 * 1000 
         ),
         httpOnly: true
     }
 
     response.status(statusCode).cookie('token',token,options).json({
-        sucess:true, 
+        sucess:true,
+        message: message,
         user,
         token,
     })

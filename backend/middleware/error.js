@@ -1,14 +1,31 @@
 
 const ErrorHandler = require('../utils/errorHandler')
 
-module.exports =  (err, request, response, next) => {
+module.exports = (error, request, response, next) => {
 
-    err.statusCode = err.statusCode || 500
-    err.message = err.message || 'Internal Server Error'
+    error.statusCode = error.statusCode || 500
+    error.message = error.message || 'Internal Server Error'
 
-    response.status(err.statusCode).json({
+
+    // // Wrong mongoose id error
+    // if (error.name === 'CastError') {
+    //     // Invalid ID format or type
+    //     message = 'Invalid ID'
+    //     error = new ErrorHandler(message, 400)
+    // }
+
+    // duplicate key error. if user with same email is already exits
+    if (error.statusCode === 'E11000') {
+        // Duplicate key error
+        const duplicateKey = Object.keys(error.keyValue)[0];
+        message = 'User already exits on this email.'
+        error = new ErrorHandler(message, 400)
+    }
+
+   
+    response.status(error.statusCode).json({
         success: false,
-        message: err.message
+        message: error.message
         //error: err.stack
     })
 

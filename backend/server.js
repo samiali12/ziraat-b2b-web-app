@@ -1,22 +1,18 @@
-
 const app = require("./app")
+const dbConnection = require("./database");
 
 const dotenv = require('dotenv');
-const dbConnection = require("./database");
 
 // config .env file
 dotenv.config({path:'backend/config/.env'})
 
-// conecting database
+//------------ Mongo Connection ------------//
 dbConnection()
-
 
 
 const server = app.listen(process.env.PORT, () => {
   console.log(`Starting development server at http://127.0.0.1:${process.env.PORT}`);
 });
-
-
 
 
 // Handling Promise Rejection Error

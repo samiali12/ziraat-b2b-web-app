@@ -2,6 +2,9 @@ const mongoose = require('mongoose')
 const validator = require('validator')
 const bcrypt = require('bcrypt')
 const jwtToken = require('jsonwebtoken')
+const crypto = require('crypto')
+const { v4: uuidv4 } = require('uuid');
+const asyncErrorHandler = require('../middleware/asyncErrorHandler');
 
 
 const userSchema = new mongoose.Schema({
@@ -60,6 +63,7 @@ const userSchema = new mongoose.Schema({
         default: "user",
     },
 
+   
     resetPasswordToken: String,
     resetPassswordExpireDate: Date,
 
@@ -68,7 +72,7 @@ const userSchema = new mongoose.Schema({
 
 userSchema.pre("save", async function (next) {
 
-    if (!this.isModified("password")){
+    if (!this.isModified("password")) {
         next()
     }
     this.password = await bcrypt.hash(this.password, 10)
@@ -76,11 +80,26 @@ userSchema.pre("save", async function (next) {
 })
 
 // JWT TOken
-userSchema.methods.getJWTToken = function (next){
-    return jwtToken.sign({id:this._id}, process.env.JWT_SECRET_KEY, {
-        expiresIn: process.env.COOKIE_EXPIRE_DATE
-    })
+userSchema.methods.getJWTToken = function (next) {
+
+    const payload = {
+        id: this._id,
+        email: this.email,
+        iat: Math.floor(Date.now() / 1000), // current timestamp in seconds
+        exp: Math.floor(Date.now() / 1000) + (74000) // expiration time in seconds (1 hour from now)
+      };
+
+    return jwtToken.sign(payload, process.env.JWT_SECRET_KEY)
 }
+
+userSchema.methods.generateNewPasswordToken = function (next) {
+
+    const token = crypto.randomBytes(32).toString('hex')
+    this.resetPasswordToken = crypto.createHash('sha256').update(token).digest('hex')
+    this.resetPassswordExpireDate = Date.now() + 15 * 60 * 100
+    return token
+}
+
 
 const User = mongoose.model('User', userSchema);
 module.exports = User;
