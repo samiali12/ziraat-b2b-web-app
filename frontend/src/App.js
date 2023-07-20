@@ -1,12 +1,15 @@
-import { Box } from '@material-ui/core';
-import './App.css';
+import NavigationBar from './components/Header/NavigationBar';
+import HomePage from './pages/HomePage';
 
 
 
 function App() {
   return (
-    <Box></Box>
+    <div>
 
+   <HomePage />
+    </div>
+  
   );
 }
 
