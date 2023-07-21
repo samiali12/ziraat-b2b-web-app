@@ -1,9 +1,8 @@
-const { default: NavigationBar } = require("../components/Header/NavigationBar")
+import Header from "../components/Header/Header";
 
 const HomePage = () => {
     return (
-        <NavigationBar />
-
+        <Header />
     )
 }
 
