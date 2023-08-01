@@ -1,6 +1,6 @@
-# Agriculture B2B E-Market Web Application
+# Ziraat B2B E-Market Web Application
 
-This repository contains the code for an Agriculture B2B E-Market Web Application. The application serves as a digital platform that connects buyers and sellers in the agriculture industry, facilitating seamless transactions and fostering growth in the sector.
+This repository contains the code for an Ziraat B2B E-Market Web Application. The application serves as a digital platform that connects buyers and sellers in the agriculture industry, facilitating seamless transactions and fostering growth in the sector.
 
 # Features
 
@@ -55,4 +55,4 @@ Contributions are welcome! If you'd like to contribute to this project, please f
 5. Submit a pull request
 
 # License
-The Agriculture B2B E-Market Android and Web Application is released under the **MIT License**.
+The Ziraat B2B E-Market  Web Application is released under the **MIT License**.
