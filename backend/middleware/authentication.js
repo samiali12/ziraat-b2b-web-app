@@ -13,7 +13,6 @@ const isAuthenticated = asyncErrorHandler(async (request, response, next) => {
     return next(new ErrorHandler("Login to access"))
   }
 
-
 })
 
 module.exports = {

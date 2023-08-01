@@ -7,29 +7,60 @@ const asyncErrorHandler = require('../middleware/asyncErrorHandler');
 const { sendToken } = require('../utils/userToken');
 const sendEmail = require("../utils/messages")
 
-const passport = require('passport')
+
+const userRegistration = asyncErrorHandler(async (request, response, next) => {
 
 
-
-const userRegistration = asyncErrorHandler(async (request, response) => {
     // getting required attribute during the registration
-    const { fullName, email, phoneNumber, password } = request.body
-    const user = await User.create({ fullName, email, phoneNumber, password })
-
-    user.save().then(
-        (error) => {
-            //duplicate key
-            if ( error && error.code === 'E11000' ) {
-               return next(new ErrorHandler("User with this email is already exits",401))
-            }else{
-                return response.status(200).json({
-                    message: "User Registered Succesfully",
-                    user
-                })
-            }
+    const { email, password } = request.body
     
-        }
-    )
+    if (await User.findOne({ email })) {
+        return response.status(401).json({
+            message: "Email is already exits. Try different "
+        })
+    }
+
+    const user = await User.create({ email, password })
+
+    const verificationToken = user.generateEmailVerificationToken()
+    //const url = `http://localhost:3000/api/v1/verify/${verificationToken}`
+
+    const emailVerificationUrl = `http://localhost:3000/verify-email/token/${verificationToken}`
+
+    try{
+        
+        sendEmail({
+            email: user.email,
+            subject: "Ziraat-B2B Email Verification",
+            message: `Click the below link to verify your email \n ${emailVerificationUrl}`
+        })
+
+        await user.save()
+        await sendToken(user, 200, response, "User Registered Successfully.")
+    }
+
+    catch (error) {
+        // if (error.code === 11000) {
+        //     response.status(401).json({
+        //         succss: false,
+        //         message: "Email is already registered."
+        //     })
+        //     // Handle the duplicate key error here
+        // } else {
+        //     // Handle other types of errors
+        //     console.error('An error occurred:', error);
+        //     response.status(401).json({
+        //         succss: false,
+        //         message: "Some thing happening wrong. Try again. "
+        //     })
+        // }
+        return response.status(401).json({
+            message: "Some things wrong happening",
+            success: false
+        })
+    }
+
+
 
 })
 
@@ -37,19 +68,65 @@ const userRegistration = asyncErrorHandler(async (request, response) => {
 const userLogin = asyncErrorHandler(async (request, response, next) => {
 
     const { email, password } = request.body
+
     const user = await User.findOne({ email }).select("+password")
 
+    //console.log(user)
+
     if (!user) {
-        return (next(new ErrorHandler('Invalid credentials1.', 401)))
+        return response.status(401).json({
+            success: false,
+            message: "Invalid Email"
+        })
     }
+
 
     // Compare the provided password with the stored password
-    const hashPassword = await bcrypt.hash(password, 10)
-    if (hashPassword == user.password) {
-        return (next(new ErrorHandler('Invalid credentials2.', 401)))
+    const hashPassword = await bcrypt.compare(password, user.password)
+   
+    console.log(hashPassword)
+
+    if (!hashPassword) {
+        return response.status(401).json({
+            success: false,
+            message: "Invalid Password"
+        })
+    }
+    else {
+        sendToken(user, 200, response, "User Login Successfully")
+
     }
 
-    sendToken(user, 200, response, "User Login Successfully")
+})
+
+const emailVerification = asyncErrorHandler(async (request, response, next) => {
+
+    
+    const token = request.params.token
+
+    const newToken = crypto.createHash('sha256').update(token).digest('hex')
+
+    const user = await User.findOne({emailVerificationToken: newToken})
+
+    if(!user){
+        console.log(user)
+        return response.status(401).json(
+            {
+                success: false,
+                message: "Something wrong happening" 
+            })
+    }
+
+    user.verified = true
+    user.emailVerificationToken = undefined
+    user.emailVerificationTokenExpireDate = undefined
+
+    await user.save()
+
+    response.status(200).json({
+        success: true,
+        message: "Email verified Successfully"
+    })
 })
 
 const userLogout = asyncErrorHandler(async (request, response, next) => {
@@ -71,15 +148,20 @@ const passwordResettingUrl = asyncErrorHandler(async (request, response, next) =
 
     const user = await User.findOne({ email: request.body.email });
 
+    console.log(request.body.email)
+
     if (!user) {
-        return next(new ErrorHandler("User not found", 401))
+        return response.status(401).json({
+            success: false,
+            message: "Ziraat-B2B have no email"
+        })
     }
 
     // Get reset password token
     const passwordToken = user.generateNewPasswordToken()
     console.log(passwordToken)
     await user.save({ validateBeforeSave: false })
-    const resetPasswordUrl = `${request.protocol}://${request.get("host")}/api/v1/password/reset/${passwordToken}`
+    const resetPasswordUrl = `http://localhost:3000/password-reset/token/${passwordToken}`
     const message = `Your password reset token is \n ${resetPasswordUrl}`
 
     try {
@@ -105,27 +187,28 @@ const passwordResettingUrl = asyncErrorHandler(async (request, response, next) =
 
 const passwordResetting = asyncErrorHandler(async (request, response, next) => {
 
+
     resetPasswordToken = crypto.createHash('sha256').update(request.params.token).digest('hex')
 
     const user = await User.findOne({
         resetPasswordToken,
-        //resetPassswordExpireDate: { $gt: Date.now() }
     })
 
     if (!user) {
-        return next(new ErrorHandler("Reset password token is invalid or has been expired", 400))
+        console.log(user)
+        return response.status(401).json({
+            success: false,
+            message: "Reset password token is invalid or has been expired"
+        })
     }
 
-    if (request.body.password != request.body.confirmPassword) {
-        return next(new ErrorHandler("Both password must be same", 400))
-    }
-
+    user.password = request.body.password
     user.resetPasswordToken = undefined
     user.resetPassswordExpireDate = undefined
 
     await user.save()
 
-    sendToken(user, 200, response)
+    sendToken(user, 200, response, "Password Reset Successfully")
 
 })
 
@@ -218,6 +301,7 @@ const deleteUser = asyncErrorHandler(async (request, response, next) => {
 module.exports = {
     userRegistration,
     userLogin,
+    emailVerification,
     userLogout,
     getUserDetails,
     updatePassword,

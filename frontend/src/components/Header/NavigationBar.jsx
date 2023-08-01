@@ -1,5 +1,7 @@
-import { React, useState } from 'react'
+import { React, useState,  } from 'react'
 import websiteLogo from '../../assets/img/website-logo.png'
+import SearchBar from '../Searchbar/Searchbar';
+import { Link } from 'react-router-dom';
 
 const NavigationBar = () => {
 
@@ -9,63 +11,48 @@ const NavigationBar = () => {
     setShowMenu(!showMenu);
   };
 
+
+  const [searchQuery, setSearchQuery] = useState('');
+
+  const handleSearchChange = (e) => {
+    setSearchQuery(e.target.value);
+  };
+
+  const handleSearchSubmit = (e) => {
+    e.preventDefault();
+    // Add your search functionality here (e.g., API call, filtering, etc.)
+    console.log('Search query:', searchQuery);
+  };
+
   return (
 
     <div>
+  
       <nav class="bg-white">
-        <div class="max-w-6xl mx-auto px-4 ">
+        <div class="max-w-7xl mx-auto px-4 py-10">
           <div class="flex justify-between">
             <div class="flex space-x-7">
 
-              <div>
-                <a href="#" class="flex items-center py-4 px-2">
+              <div class="block items-center">
+                <a href="#" class="flex items-center p-3">
                   <img src={websiteLogo} alt="Logo" class="h-auto w-40 mr-2" />
                 </a>
               </div>
 
-              <div class="hidden md:flex items-center space-x-3">
-                <a
-                  href="/"
-                  class="py-4 px-2 text-gray-500 hover:text-[#28844b] font-semibold transition duration-300"
-                >Home</a
-                >
-                <a
-                  href="/services"
-                  class="py-4 px-2 text-gray-600 hover:text-[#28844b] font-semibold transition duration-300"
-                >Services</a
-                >
-                 <a
-                  href="/products"
-                  class="py-4 px-2 text-gray-600  hover:text-[#28844b] font-semibold transition duration-300"
-                >Products</a
-                >
-
-                <a
-                  href="/news"
-                  class="py-4 px-2 text-gray-600  hover:text-[#28844b] font-semibold transition duration-300"
-                >News
-                </a>
-                <a
-                  href="/blogs"
-                  class="py-4 px-2 text-gray-600 hover:text-[#28844b] font-semibold transition duration-300"
-                >Blogs</a
-                >
-              </div>
-
             </div>
+
+            <SearchBar />
 
             {/* Secondary Menu */}
             <div class="hidden md:flex items-center space-x-4 ">
-              <a
-                href=""
-                class="py-2 px-2 font-medium text-gray-500 rounded border hover:bg-gray-200 transition duration-300"
-              >Log In</a
-              >
-              <a
-                href=""
-                class="py-2 px-2 font-medium text-white bg-[#28844b] rounded transition duration-300"
-              >Become Seller</a
-              >
+              <Link
+                to="/login"
+                class="p-3 font-medium text-gray-500 rounded border hover:bg-gray-200 transition duration-300"
+              >Log In</Link>
+              <Link
+                to="/signup"
+                class="p-3 font-medium text-white bg-[#28844b] rounded transition duration-300"
+              >Become Seller</Link>
             </div>
 
             <div class="md:hidden flex items-center">

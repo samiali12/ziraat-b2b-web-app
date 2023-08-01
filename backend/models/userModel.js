@@ -11,30 +11,27 @@ const userSchema = new mongoose.Schema({
 
     fullName: {
         type: String,
-        required: [true, 'Full name is required.'],
-        minlength: [8, 'Full Name should be at least 4 characters'],
-        maxLength: [18, 'Full Name cann\'t be exceed 30 characters'],
+        //required: [true, 'Full name is required.'],
+        //minlength: [8, 'Full Name should be at least 4 characters'],
+        //maxLength: [18, 'Full Name cann\'t be exceed 30 characters'],
 
     },
 
     email: {
         type: String,
-        required: [true, 'Email address is required.'],
         unique: true,
         trim: true,
         lowercase: true,
-        validate: [validator.isEmail, 'Please enter a valid email address.'],
+        
     },
 
     phoneNumber: {
         type: String,
-        required: [true, 'Phone number is required.'],
+        //required: [true, 'Phone number is required.'],
     },
 
     password: {
         type: String,
-        required: [true, 'Password is required.'],
-        minlength: [8, 'Password should be at least 8 characters long.'],
         select: false
     },
 
@@ -63,10 +60,18 @@ const userSchema = new mongoose.Schema({
         default: "user",
     },
 
+    verified: {
+        type: Boolean,
+        requirec: true, 
+        default: false
+    }, 
    
+
+    emailVerificationToken: String,
+    emailVerificationTokenExpireDate: Date,
+
     resetPasswordToken: String,
     resetPassswordExpireDate: Date,
-
 });
 
 
@@ -78,6 +83,7 @@ userSchema.pre("save", async function (next) {
     this.password = await bcrypt.hash(this.password, 10)
 
 })
+
 
 // JWT TOken
 userSchema.methods.getJWTToken = function (next) {
@@ -92,11 +98,21 @@ userSchema.methods.getJWTToken = function (next) {
     return jwtToken.sign(payload, process.env.JWT_SECRET_KEY)
 }
 
+// Generate email verification token
+userSchema.methods.generateEmailVerificationToken = function () {
+    
+    const token = crypto.randomBytes(32).toString('hex')
+    this.emailVerificationToken = crypto.createHash('sha256').update(token).digest('hex')
+    this.emailVerificationTokenExpireDate =  Date.now() + 15 * 60 * 100
+    return token
+};
+
+// Generate password reset token
 userSchema.methods.generateNewPasswordToken = function (next) {
 
     const token = crypto.randomBytes(32).toString('hex')
     this.resetPasswordToken = crypto.createHash('sha256').update(token).digest('hex')
-    this.resetPassswordExpireDate = Date.now() + 15 * 60 * 100
+    this.resetPassswordExpireDate = Date.now() + 60 * 60 * 1000
     return token
 }
 
