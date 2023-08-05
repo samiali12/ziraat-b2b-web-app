@@ -1,7 +1,7 @@
 import React from 'react';
 
 const products = [
-  { id: 1, name: 'Product 1', category: 'Category A', price: '$19.99', imageUrl: 'https://via.placeholder.com/150' },
+  { id: 1, name: 'Early corn seed A6267', category: 'Cereal Seeds', price: '$19.99', imageUrl: 'https://img.agriexpo.online/images_ag/photo-g/184535-12620659.webp' },
   { id: 2, name: 'Product 2', category: 'Category B', price: '$29.99', imageUrl: 'https://via.placeholder.com/150' },
   { id: 3, name: 'Product 3', category: 'Category A', price: '$24.99', imageUrl: 'https://via.placeholder.com/150' },
   { id: 4, name: 'Product 4', category: 'Category A', price: '$24.99', imageUrl: 'https://via.placeholder.com/150' },

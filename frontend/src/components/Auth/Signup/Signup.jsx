@@ -4,6 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { userRegister, resetUser } from '../../../features/authFeatures/authSlice';
 import Logo from '../../../assets/img/ziraat-logo.png';
+import MetaData from '../../../app/MetaData';
 
 
 const Signup = () => {
@@ -57,6 +58,7 @@ const Signup = () => {
 
     return (
         <>
+        <MetaData title="Sign up | Ziraat B2B" />
             <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
                 <div className="sm:mx-auto sm:w-full sm:max-w-sm">
                     <img

@@ -1,18 +1,10 @@
-const mongoose = require('mongoose')
-const validator = require('validator')
-const bcrypt = require('bcrypt')
-const jwtToken = require('jsonwebtoken')
-const crypto = require('crypto')
-const asyncErrorHandler = require('../middleware/asyncErrorHandler');
-
-
-const userSchema = new mongoose.Schema({
+const sellerSchema = new mongoose.Schema({
 
     fullName: {
         type: String,
-        //required: [true, 'Full name is required.'],
-        //minlength: [8, 'Full Name should be at least 4 characters'],
-        //maxLength: [18, 'Full Name cann\'t be exceed 30 characters'],
+        required: [true, 'Full name is required.'],
+        minlength: [8, 'Full Name should be at least 4 characters'],
+        maxLength: [18, 'Full Name cann\'t be exceed 30 characters'],
 
     },
 
@@ -26,7 +18,7 @@ const userSchema = new mongoose.Schema({
 
     phoneNumber: {
         type: String,
-        //required: [true, 'Phone number is required.'],
+        required: [true, 'Phone number is required.'],
     },
 
     password: {
@@ -56,7 +48,7 @@ const userSchema = new mongoose.Schema({
 
     role: {
         type: String,
-        default: "user",
+        default: "seller",
     },
 
     verified: {
@@ -74,7 +66,7 @@ const userSchema = new mongoose.Schema({
 });
 
 
-userSchema.pre("save", async function (next) {
+sellerSchema.pre("save", async function (next) {
 
     if (!this.isModified("password")) {
         next()
@@ -85,7 +77,7 @@ userSchema.pre("save", async function (next) {
 
 
 // JWT TOken
-userSchema.methods.getJWTToken = function (next) {
+sellerSchema.methods.getJWTToken = function (next) {
 
     const payload = {
         id: this._id,
@@ -98,7 +90,7 @@ userSchema.methods.getJWTToken = function (next) {
 }
 
 // Generate email verification token
-userSchema.methods.generateEmailVerificationToken = function () {
+sellerSchema.methods.generateEmailVerificationToken = function () {
     
     const token = crypto.randomBytes(32).toString('hex')
     this.emailVerificationToken = crypto.createHash('sha256').update(token).digest('hex')
@@ -107,7 +99,7 @@ userSchema.methods.generateEmailVerificationToken = function () {
 };
 
 // Generate password reset token
-userSchema.methods.generateNewPasswordToken = function (next) {
+sellerSchema.methods.generateNewPasswordToken = function (next) {
 
     const token = crypto.randomBytes(32).toString('hex')
     this.resetPasswordToken = crypto.createHash('sha256').update(token).digest('hex')
@@ -116,5 +108,5 @@ userSchema.methods.generateNewPasswordToken = function (next) {
 }
 
 
-const User = mongoose.model('User', userSchema);
+const User = mongoose.model('seller', sellerSchema);
 module.exports = User;

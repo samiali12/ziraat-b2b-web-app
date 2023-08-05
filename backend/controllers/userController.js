@@ -121,7 +121,7 @@ const emailVerification = asyncErrorHandler(async (request, response, next) => {
     user.emailVerificationToken = undefined
     user.emailVerificationTokenExpireDate = undefined
 
-    await user.save()
+    await user.save({ validateBeforeSave: false })
 
     response.status(200).json({
         success: true,

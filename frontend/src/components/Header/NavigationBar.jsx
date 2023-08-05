@@ -52,7 +52,7 @@ const NavigationBar = () => {
               <Link
                 to="/signup"
                 class="p-3 font-medium text-white bg-[#28844b] rounded transition duration-300"
-              >Become Seller</Link>
+              >Join</Link>
             </div>
 
             <div class="md:hidden flex items-center">
@@ -106,7 +106,7 @@ const NavigationBar = () => {
             <a
               href=""
               class="py-2 px-2 font-medium text-white bg-[#28844b] rounded transition duration-300"
-            >Become Seller</a
+            >Join</a
             >
           </div>
         </div>
