@@ -9,7 +9,7 @@ const Features = require('../utils/features');
 // Products Controller Functions for getting all products 
 const getAllProducts = async (request, response) => {
 
-    const resultPerPage = 5;
+    const resultPerPage = 8;
 
     const apiFeatures = new Features(Product.find(), request.query).search().filter().pagination(resultPerPage)
 

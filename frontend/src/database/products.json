@@ -1,0 +1,325 @@
+[
+    {
+        "name": "Corn Seeds",
+        "description": "Premium corn seeds for optimal yield",
+        "price": 12.99,
+        "rating": 4.8,
+        "images": [
+            {
+                "public_id": "corn_seed_image",
+                "image_url": "https://example.com/corn_seed_image.jpg"
+            }
+        ],
+        "category": "Seeds",
+        "stock": 300,
+        "numberReviews": 15,
+        "reviews": [],
+        "postedDate": "2023-08-08T10:00:00.000Z"
+    },
+    {
+        "name": "Rice Seeds",
+        "description": "High-yield rice seeds for paddy fields",
+        "price": 8.75,
+        "rating": 4.6,
+        "images": [
+            {
+                "public_id": "rice_seed_image",
+                "image_url": "https://example.com/rice_seed_image.jpg"
+            }
+        ],
+        "category": "Seeds",
+        "stock": 250,
+        "numberReviews": 8,
+        "reviews": [],
+        "postedDate": "2023-08-08T11:00:00.000Z"
+    },
+    {
+        "name": "Tomato Plants",
+        "description": "Healthy tomato plants for your garden",
+        "price": 3.49,
+        "rating": 4.2,
+        "images": [
+            {
+                "public_id": "tomato_plant_image",
+                "image_url": "https://example.com/tomato_plant_image.jpg"
+            }
+        ],
+        "category": "Plants",
+        "stock": 150,
+        "numberReviews": 12,
+        "reviews": [],
+        "postedDate": "2023-08-08T12:30:00.000Z"
+    },
+    {
+        "name": "Sunflower Seeds",
+        "description": "Bright and beautiful sunflower seeds for gardens",
+        "price": 5.99,
+        "rating": 4.3,
+        "images": [
+            {
+                "public_id": "sunflower_seed_image",
+                "image_url": "https://example.com/sunflower_seed_image.jpg"
+            }
+        ],
+        "category": "Seeds",
+        "stock": 400,
+        "numberReviews": 11,
+        "reviews": [],
+        "postedDate": "2023-08-08T16:00:00.000Z"
+    },
+    {
+        "name": "Grapes Vines",
+        "description": "Vineyard-ready grape vines for wine production",
+        "price": 14.75,
+        "rating": 4.7,
+        "images": [
+            {
+                "public_id": "grape_vine_image",
+                "image_url": "https://example.com/grape_vine_image.jpg"
+            }
+        ],
+        "category": "Vines",
+        "stock": 120,
+        "numberReviews": 9,
+        "reviews": [],
+        "postedDate": "2023-08-08T17:00:00.000Z"
+    },
+    {
+        "name": "Pumpkin Seeds",
+        "description": "Premium pumpkin seeds for fall harvest",
+        "price": 7.49,
+        "rating": 4.6,
+        "images": [
+            {
+                "public_id": "pumpkin_seed_image",
+                "image_url": "https://example.com/pumpkin_seed_image.jpg"
+            }
+        ],
+        "category": "Seeds",
+        "stock": 250,
+        "numberReviews": 8,
+        "reviews": [],
+        "postedDate": "2023-08-08T18:30:00.000Z"
+    },
+    {
+        "name": "Carrot Seeds",
+        "description": "High-quality carrot seeds for home gardens",
+        "price": 6.49,
+        "rating": 4.9,
+        "images": [
+            {
+                "public_id": "carrot_seed_image",
+                "image_url": "https://example.com/carrot_seed_image.jpg"
+            }
+        ],
+        "category": "Seeds",
+        "stock": 300,
+        "numberReviews": 9,
+        "reviews": [],
+        "postedDate": "2023-08-08T15:30:00.000Z"
+    },
+    {
+        "name": "Cucumber Seeds",
+        "description": "High-yield cucumber seeds for home gardens",
+        "price": 6.99,
+        "rating": 4.5,
+        "images": [
+            {
+                "public_id": "cucumber_seed_image",
+                "image_url": "https://example.com/cucumber_seed_image.jpg"
+            }
+        ],
+        "category": "Seeds",
+        "stock": 300,
+        "numberReviews": 10,
+        "reviews": [],
+        "postedDate": "2023-08-08T19:00:00.000Z"
+    },
+    {
+        "name": "Orange Trees",
+        "description": "Citrus orange trees for fresh fruit harvest",
+        "price": 18.99,
+        "rating": 4.4,
+        "images": [
+            {
+                "public_id": "orange_tree_image",
+                "image_url": "https://example.com/orange_tree_image.jpg"
+            }
+        ],
+        "category": "Trees",
+        "stock": 90,
+        "numberReviews": 7,
+        "reviews": [],
+        "postedDate": "2023-08-08T20:00:00.000Z"
+    },
+    {
+        "name": "Soybean Seeds",
+        "description": "Quality soybean seeds for sustainable farming",
+        "price": 11.49,
+        "rating": 4.8,
+        "images": [
+            {
+                "public_id": "soybean_seed_image",
+                "image_url": "https://example.com/soybean_seed_image.jpg"
+            }
+        ],
+        "category": "Seeds",
+        "stock": 280,
+        "numberReviews": 12,
+        "reviews": [],
+        "postedDate": "2023-08-08T21:30:00.000Z"
+    },
+    {
+        "name": "Bean Seeds",
+        "description": "Healthy and productive bean seeds for your garden",
+        "price": 5.49,
+        "rating": 4.4,
+        "images": [
+            {
+                "public_id": "bean_seed_image",
+                "image_url": "https://example.com/bean_seed_image.jpg"
+            }
+        ],
+        "category": "Seeds",
+        "stock": 270,
+        "numberReviews": 7,
+        "reviews": [],
+        "postedDate": "2023-08-09T01:00:00.000Z"
+    },
+    {
+        "name": "Cherry Trees",
+        "description": "Sweet cherry trees perfect for backyard planting",
+        "price": 21.99,
+        "rating": 4.7,
+        "images": [
+            {
+                "public_id": "cherry_tree_image",
+                "image_url": "https://example.com/cherry_tree_image.jpg"
+            }
+        ],
+        "category": "Trees",
+        "stock": 80,
+        "numberReviews": 6,
+        "reviews": [],
+        "postedDate": "2023-08-09T02:00:00.000Z"
+    },
+    {
+        "name": "Spinach Seeds",
+        "description": "Nutrient-rich spinach seeds for a healthy diet",
+        "price": 4.99,
+        "rating": 4.6,
+        "images": [
+            {
+                "public_id": "spinach_seed_image",
+                "image_url": "https://example.com/spinach_seed_image.jpg"
+            }
+        ],
+        "category": "Seeds",
+        "stock": 290,
+        "numberReviews": 9,
+        "reviews": [],
+        "postedDate": "2023-08-09T03:30:00.000Z"
+    },
+    {
+        "name": "Strawberry Plants",
+        "description": "Juicy strawberry plants for fresh berries",
+        "price": 3.99,
+        "rating": 4.8,
+        "images": [
+            {
+                "public_id": "strawberry_plant_image",
+                "image_url": "https://example.com/strawberry_plant_image.jpg"
+            }
+        ],
+        "category": "Plants",
+        "stock": 150,
+        "numberReviews": 11,
+        "reviews": [],
+        "postedDate": "2023-08-09T04:00:00.000Z"
+    },
+    {
+        "name": "Corn Plants",
+        "description": "Mature corn plants for homegrown produce",
+        "price": 6.75,
+        "rating": 4.6,
+        "images": [
+            {
+                "public_id": "corn_plant_image",
+                "image_url": "https://example.com/corn_plant_image.jpg"
+            }
+        ],
+        "category": "Plants",
+        "stock": 120,
+        "numberReviews": 8,
+        "reviews": [],
+        "postedDate": "2023-08-09T05:00:00.000Z"
+    },
+    {
+        "name": "Onion Seeds",
+        "description": "High-quality onion seeds for cooking and farming",
+        "price": 2.49,
+        "rating": 4.7,
+        "images": [
+            {
+                "public_id": "onion_seed_image",
+                "image_url": "https://example.com/onion_seed_image.jpg"
+            }
+        ],
+        "category": "Seeds",
+        "stock": 350,
+        "numberReviews": 9,
+        "reviews": [],
+        "postedDate": "2023-08-09T06:30:00.000Z"
+    },
+    {
+        "name": "Mango Trees",
+        "description": "Tropical mango trees for a taste of paradise",
+        "price": 24.99,
+        "rating": 4.5,
+        "images": [
+            {
+                "public_id": "mango_tree_image",
+                "image_url": "https://example.com/mango_tree_image.jpg"
+            }
+        ],
+        "category": "Trees",
+        "stock": 70,
+        "numberReviews": 7,
+        "reviews": [],
+        "postedDate": "2023-08-09T07:00:00.000Z"
+    },
+    {
+        "name": "Bell Pepper Seeds",
+        "description": "Vibrant bell pepper seeds for colorful harvests",
+        "price": 4.49,
+        "rating": 4.3,
+        "images": [
+            {
+                "public_id": "bell_pepper_seed_image",
+                "image_url": "https://example.com/bell_pepper_seed_image.jpg"
+            }
+        ],
+        "category": "Seeds",
+        "stock": 280,
+        "numberReviews": 8,
+        "reviews": [],
+        "postedDate": "2023-08-09T08:00:00.000Z"
+    },
+    {
+        "name": "Lemon Trees",
+        "description": "Citrus lemon trees for zesty flavors",
+        "price": 19.99,
+        "rating": 4.4,
+        "images": [
+            {
+                "public_id": "lemon_tree_image",
+                "image_url": "https://example.com/lemon_tree_image.jpg"
+            }
+        ],
+        "category": "Trees",
+        "stock": 100,
+        "numberReviews": 6,
+        "reviews": [],
+        "postedDate": "2023-08-09T09:30:00.000Z"
+    }
+]

@@ -10,25 +10,23 @@ const sendEmail = require("../utils/messages")
 
 const userRegistration = asyncErrorHandler(async (request, response, next) => {
 
-
     // getting required attribute during the registration
-    const { email, password } = request.body
-    
+    const { email, password, role } = request.body
+
     if (await User.findOne({ email })) {
         return response.status(401).json({
             message: "Email is already exits. Try different "
         })
     }
 
-    const user = await User.create({ email, password })
+    const user = await User.create({ email, password, role })
 
     const verificationToken = user.generateEmailVerificationToken()
-    //const url = `http://localhost:3000/api/v1/verify/${verificationToken}`
 
     const emailVerificationUrl = `http://localhost:3000/verify-email/token/${verificationToken}`
 
-    try{
-        
+    try {
+
         sendEmail({
             email: user.email,
             subject: "Ziraat-B2B Email Verification",
@@ -36,34 +34,61 @@ const userRegistration = asyncErrorHandler(async (request, response, next) => {
         })
 
         await user.save()
-        await sendToken(user, 200, response, "User Registered Successfully.")
+        response.status(200).json({
+            success: true,
+            message: "User Registerd Successfully",
+            user
+        })
+        //await sendToken(user, 200, response, "User Registered Successfully.")
     }
 
     catch (error) {
-        // if (error.code === 11000) {
-        //     response.status(401).json({
-        //         succss: false,
-        //         message: "Email is already registered."
-        //     })
-        //     // Handle the duplicate key error here
-        // } else {
-        //     // Handle other types of errors
-        //     console.error('An error occurred:', error);
-        //     response.status(401).json({
-        //         succss: false,
-        //         message: "Some thing happening wrong. Try again. "
-        //     })
-        // }
+        return response.status(401).json({
+            message: "Some things wrong happening",
+            success: false
+        })
+    }
+})
+
+const sendEmailVerification = asyncErrorHandler(async (request, response, next) => {
+
+    const user = await User.findOne({ email: request.body.email });
+
+
+    if (!user) {
+        
         return response.status(401).json({
             message: "Some things wrong happening",
             success: false
         })
     }
 
+    try {
+
+        const verificationToken = user.generateEmailVerificationToken()
+        const emailVerificationUrl = `http://localhost:3000/verify-email/token/${verificationToken}`
+        sendEmail({
+            email: user.email,
+            subject: "Ziraat-B2B Email Verification",
+            message: `Click the below link to verify your email \n ${emailVerificationUrl}`
+        })
+
+        await user.save({ validateBeforeSave: false })
+        return response.status(200).json({
+            success: true,
+            message:"Email verification link is send"
+        })
+    }
+    catch(err){
+        return response.status(501).json({
+            success: false,
+            message: "Some things wrong happening. Try gain later"
+        })
+    }
+
 
 
 })
-
 
 const userLogin = asyncErrorHandler(async (request, response, next) => {
 
@@ -83,7 +108,7 @@ const userLogin = asyncErrorHandler(async (request, response, next) => {
 
     // Compare the provided password with the stored password
     const hashPassword = await bcrypt.compare(password, user.password)
-   
+
     console.log(hashPassword)
 
     if (!hashPassword) {
@@ -101,27 +126,28 @@ const userLogin = asyncErrorHandler(async (request, response, next) => {
 
 const emailVerification = asyncErrorHandler(async (request, response, next) => {
 
-    
+    console.log("Hello")
     const token = request.params.token
 
     const newToken = crypto.createHash('sha256').update(token).digest('hex')
 
-    const user = await User.findOne({emailVerificationToken: newToken})
+    const user = await User.findOne({ emailVerificationToken: newToken })
 
-    if(!user){
+    if (!user) {
         console.log(user)
         return response.status(401).json(
             {
                 success: false,
-                message: "Something wrong happening" 
+                message: "Something wrong happening"
             })
     }
 
+   
     user.verified = true
     user.emailVerificationToken = undefined
     user.emailVerificationTokenExpireDate = undefined
 
-    await user.save({ validateBeforeSave: false })
+    await user.save({ validateBeforeSave: true })
 
     response.status(200).json({
         success: true,
@@ -302,6 +328,7 @@ module.exports = {
     userRegistration,
     userLogin,
     emailVerification,
+    sendEmailVerification,
     userLogout,
     getUserDetails,
     updatePassword,

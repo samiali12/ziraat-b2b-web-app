@@ -9,7 +9,6 @@ const bodyParser = require('body-parser')
 
 
 
-
 //------------ Express Middle Configuration ------------//
 app.use(express.json());
 app.use(cors())
@@ -25,6 +24,5 @@ app.use(errorHandlerMiddleware)
 
 app.use("/api/v1", productsRoute)
 app.use("/api/v1", userRoutes)
-
 
 module.exports = app

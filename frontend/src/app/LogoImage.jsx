@@ -1,17 +1,12 @@
-import Logo from '../assets/img/ziraat-logo.png'
+import Logo from '../assets/img/website-logo.png'
 
-const LogoImage = ({title}) => {
+const LogoImage = ({ title }) => {
     return (
-        <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-                <img
-                    className="mx-auto h-20 w-auto"
-                    src={Logo}
-                    alt="Ziraat B2b"
-                />
-                <h2 className="mt-5 text-center text-2xl font-bold leading-9 tracking-tight text-gray-600">
-                   {title}
-                </h2>
-            </div>
+        <div className="block items-center">
+            <a href="#" class="flex items-center p-3">
+                <img src={Logo} alt="Logo" class="h-auto w-40 mr-2" />
+            </a>
+        </div>
     )
 }
 

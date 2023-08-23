@@ -2,7 +2,7 @@ const express = require('express')
 
 const { userRegistration, userLogin, getUserDetails,
     userLogout, passwordResettingUrl, updatePassword,
-    deleteUser, profileUpdate, passwordResetting, emailVerification } = require('../controllers/userController')
+    deleteUser, profileUpdate, passwordResetting, emailVerification, sendEmailVerification } = require('../controllers/userController')
 
 const { isAuthenticated } = require('../middleware/authentication')
 
@@ -15,10 +15,11 @@ const router = express.Router()
 //     message: "Hello World"
 //   })})
 
-router.route("/register").post(userRegistration)
+router.route("/signup").post(userRegistration)
 router.route("/login").post(userLogin)
 router.route("/logout").get(userLogout)
-router.route("/user/verify-email/:token").post(emailVerification)
+router.route("/user/verify-email/:token").put(emailVerification)
+router.route("/sendEmailVerification").post(sendEmailVerification)
 router.route("/password/forget").post(passwordResettingUrl)
 router.route("/password/reset/:token").put(passwordResetting)
 router.route("/password/update").put(updatePassword)

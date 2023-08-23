@@ -5,10 +5,10 @@ import SecondaryNavigation from "./SecondaryNavigation";
 const Header = () => {
     return (
         <div>
-            <NavigationBar />
+            <NavigationBar /> 
             <BannerSection />
             <SecondaryNavigation /> 
-            
+
         </div>
 
     )

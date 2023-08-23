@@ -56,12 +56,12 @@ const userSchema = new mongoose.Schema({
 
     role: {
         type: String,
-        default: "user",
+        default: "buyer",
     },
 
     verified: {
         type: Boolean,
-        requirec: true, 
+        required: true, 
         default: false
     }, 
    
@@ -88,21 +88,17 @@ userSchema.pre("save", async function (next) {
 userSchema.methods.getJWTToken = function (next) {
 
     const payload = {
-        id: this._id,
-        email: this.email,
-        iat: Math.floor(Date.now() / 1000), // current timestamp in seconds
-        exp: Math.floor(Date.now() / 1000) + (74000) // expiration time in seconds (1 hour from now)
-      };
-
+        _id: this._id,
+        email: this._email
+    }
     return jwtToken.sign(payload, process.env.JWT_SECRET_KEY)
 }
 
 // Generate email verification token
-userSchema.methods.generateEmailVerificationToken = function () {
+userSchema.methods.generateEmailVerificationToken = function (next) {
     
     const token = crypto.randomBytes(32).toString('hex')
     this.emailVerificationToken = crypto.createHash('sha256').update(token).digest('hex')
-    this.emailVerificationTokenExpireDate =  Date.now() + 15 * 60 * 100
     return token
 };
 

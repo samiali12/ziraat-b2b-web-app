@@ -59,7 +59,7 @@ export const logoutUser = createAsyncThunk('auth/logout', async (user, thunkApi)
 
 
 export const passwordResetUrl = createAsyncThunk('auth/passwordResetUrl', async (email, thunkApi) => {
-    try{
+    try {
         await authServices.passwordResetUrl(email)
     }
     catch (error) {
@@ -72,13 +72,13 @@ export const passwordResetUrl = createAsyncThunk('auth/passwordResetUrl', async 
 
         return thunkApi.rejectWithValue(message)
     }
-   
+
 })
 
 
 export const resetUserPassword = createAsyncThunk('auth/passwordreset', async (data, thunkApi) => {
 
-    
+
     try {
         await authServices.resetPassword(data)
     }
@@ -92,7 +92,24 @@ export const resetUserPassword = createAsyncThunk('auth/passwordreset', async (d
 
         return thunkApi.rejectWithValue(message)
     }
-   
+
+})
+
+export const sendEmailVerification = createAsyncThunk('auth/email', async (data, thunkApi) => {
+
+    try {
+        await authServices.sendEmailVerification(data)
+    } catch (error) {
+        const message = (
+            error.response &&
+            error.response.data &&
+            error.response.data.message) ||
+            error.message ||
+            error.toString()
+
+        return thunkApi.rejectWithValue(message)
+
+    }
 })
 
 
@@ -159,7 +176,7 @@ export const authSlice = createSlice({
                 state.isLoading = false
                 state.message = action.payload
                 state.user = null
-            }) 
+            })
 
             .addCase(resetUserPassword.pending, (state) => {
                 state.isLoading = true
@@ -171,6 +188,22 @@ export const authSlice = createSlice({
                 state.message = action.payload
             })
             .addCase(resetUserPassword.rejected, (state, action) => {
+                state.isError = true
+                state.isSuccess = false
+                state.isLoading = false
+                state.message = action.payload
+                state.user = null
+            })
+            .addCase(sendEmailVerification.pending, (state) => {
+                state.isLoading = true
+            })
+            .addCase(sendEmailVerification.fulfilled, (state, action) => {
+                state.isError = false
+                state.isSuccess = true
+                state.isLoading = false
+                state.message = action.payload
+            })
+            .addCase(sendEmailVerification.rejected, (state, action) => {
                 state.isError = true
                 state.isSuccess = false
                 state.isLoading = false

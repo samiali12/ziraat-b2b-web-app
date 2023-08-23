@@ -12,7 +12,7 @@ const {authorizationRoles} = require('../controllers/userController')
 
 const router = express.Router()
 
-router.route("/products").get(isAuthenticated, authorizationRoles("admin"), getAllProducts)
+router.route("/products").get(getAllProducts)
 router.route("/product/new").post( productCreation)
 router.route("/product/:id")
     .put(isAuthenticated, productUpdate)

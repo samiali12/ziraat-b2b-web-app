@@ -8,13 +8,13 @@ import EmailVerification from './components/Auth/Verification/EmailVerification'
 import EmailVerified from './components/Auth/Verification/EmailVerified';
 import PasswordResetUrl from './components/Auth/Password Resetting/PasswordResetUrl';
 import UserPasswordReset from './components/Auth/Password Resetting/UserPasswordReset';
-import Dashboard from './components/Dashboard/Dashboard';
-import DashboardProtectedRoute from './components/Dashboard/DashboardProtectedRoute';
-import SupplierSignupForm from './components/Auth/Signup/SupplierSignupForm';
-import SupplierForm from './components/Auth/Signup/SupplierForm/SupplierForm';
+import DashboardPage from './pages/DashboardPage'
 
 
 function App() {
+
+  
+
   return (
     <BrowserRouter>
 
@@ -34,6 +34,7 @@ function App() {
         <Route path="/products" element={<ProductsPage />} />
       </Routes>
 
+      {/* Auth Routes */}
       <Routes>
         <Route exact path="/login" element={<Login />} />
       </Routes>
@@ -43,11 +44,7 @@ function App() {
       </Routes>
 
       <Routes>
-        <Route path="/supplier/signup/" element={<SupplierForm/>} />
-      </Routes>
-
-      <Routes>
-        <Route exact path="/user/verify-email/:id" element={<EmailVerification />} />
+        <Route exact path="/verify-email/:email" element={<EmailVerification />} />
       </Routes>
 
       <Routes>
@@ -63,10 +60,11 @@ function App() {
       </Routes>
 
 
+      {/* Seller Dashboard Routes */}
       <Routes>
-        <Route path="/profile" element={<Dashboard />} />
+        <Route path="/profile/:id" element={<DashboardPage />} />
       </Routes>
-
+    
     </BrowserRouter>
 
   );

@@ -5,21 +5,19 @@ const API_URL = "/api/v1/register/"
 // Register user
 const register = async (userData) => {
 
-    const response = await axios.post("http://localhost:8000/api/v1/register/",userData)
-
-    if(response.data){
+    const response = await axios.post("http://localhost:8000/api/v1/signup/", userData)
+    if (response.data) {
         localStorage.setItem('user', JSON.stringify(response.data))
     }
-
     return response.data
 }
 
 // login 
 const login = async (userData) => {
 
-    const response = await axios.post("http://localhost:8000/api/v1/login/",userData)
+    const response = await axios.post("http://localhost:8000/api/v1/login/", userData)
 
-    if(response.data){
+    if (response.data) {
         localStorage.setItem('user', JSON.stringify(response.data))
     }
 
@@ -34,7 +32,7 @@ const logout = async () => {
 
 const passwordResetUrl = async (email) => {
 
-    const response = await axios.post("http://localhost:8000/api/v1/password/forget/",email)
+    const response = await axios.post("http://localhost:8000/api/v1/password/forget/", email)
 
     return response.data
 }
@@ -43,9 +41,13 @@ const passwordResetUrl = async (email) => {
 const resetPassword = async (data) => {
 
     const response = await axios.put(`http://localhost:8000/api/v1/password/reset/${data.token}`,
-    {"password": data.password})
+        { "password": data.password })
+    return response.data
+}
 
-    console.log(response.data)
+
+const sendEmailVerification = async (email) => {
+    const response = await axios.post("http://localhost:8000/api/v1/sendEmailVerification", {"email": email})
     return response.data
 }
 
@@ -54,7 +56,8 @@ const authServices = {
     login,
     logout,
     passwordResetUrl,
-    resetPassword
+    resetPassword,
+    sendEmailVerification,
 }
 
 export default authServices
