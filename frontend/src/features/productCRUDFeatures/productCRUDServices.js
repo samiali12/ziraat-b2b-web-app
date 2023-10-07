@@ -7,10 +7,15 @@ const getAllProducts = async () => {
     return response.data
 }
 
-
+const getProductById = async (data) => {
+    console.log(data)
+    const response = await axios.get(`http://localhost:8000/api/v1/products/64fb084629656527dfb9213d`)
+    return response.data
+}
 
 const productsCRUDServices = {
     getAllProducts,
+    getProductById
 }
 
 export default productsCRUDServices;

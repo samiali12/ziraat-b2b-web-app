@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
 import productsCRUDServices from "./productCRUDServices"
+import { configureStore, getDefaultMiddleware } from '@reduxjs/toolkit';
 
 const initialState = {
     products: [],
@@ -8,10 +9,29 @@ const initialState = {
     isLoading: false,
 }
 
+const middleware = [...getDefaultMiddleware({
+    serializableCheck: false, // Disable the ImmutableStateInvariantMiddleware
+    // Other middleware options go here if needed
+  })];
+
 export const getAllProducts = createAsyncThunk("products/fetch", async (thunkApi) => {
     try {
-        
         return await productsCRUDServices.getAllProducts()
+    } catch (error) {
+        const message = (
+            error.response &&
+            error.response.data &&
+            error.response.data.message) ||
+            error.message ||
+            error.toString()
+        return thunkApi.rejectWithValue(message)
+    }
+})
+
+export const getProductById = createAsyncThunk("product/fetch", async (data, thunkApi) => {
+    try {
+       
+        return await productsCRUDServices.getProductById(data)
     } catch (error) {
         const message = (
             error.response &&
@@ -36,6 +56,7 @@ export const productSlice = createSlice({
         }
 
     },
+    middleware,
     extraReducers: (builder) => {
 
         builder
@@ -50,6 +71,22 @@ export const productSlice = createSlice({
                 state.products = action.payload
             })
             .addCase(getAllProducts.rejected, (state, action) => {
+                state.isLoading = false
+                state.isSuccess = false
+                state.isError = true
+                state.products = action.payload
+            })
+
+            .addCase(getProductById.pending, (state) => {
+                state.isLoading = true
+            })
+            .addCase(getProductById.fulfilled, (state, action) => {
+                state.isLoading = false
+                state.isSuccess = true
+                state.isError = false
+                state.products = action.payload
+            })
+            .addCase(getProductById.rejected, (state, action) => {
                 state.isLoading = false
                 state.isSuccess = false
                 state.isError = true

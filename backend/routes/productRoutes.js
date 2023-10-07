@@ -1,25 +1,54 @@
-const passport = require('passport')
-const express = require('express')
+const express = require('express');
+const router = express.Router();
 
-const { getAllProducts, productCreation, 
-    productUpdate, productDeletion, 
-    getSpcificProduct, createProductReviews,
-    getProductReviews , deleteProductReviews } = require('../controllers/productsController')
+// Import product controller functions
+const {
+  getAllProducts,
+  createProduct,
+  updateProduct,
+  deleteProduct,
+  getSpecificProduct,
+  createProductReview,
+  getProductReviews,
+  deleteProductReview,
+} = require('../controllers/productsController');
 
-const { isAuthenticated } = require('../middleware/authentication')
-const {authorizationRoles} = require('../controllers/userController')
+// Import authentication and authorization middleware
+const { isAuthenticated } = require('../middleware/authentication');
 
 
-const router = express.Router()
+// Routes for Products
 
-router.route("/products").get(getAllProducts)
-router.route("/product/new").post( productCreation)
-router.route("/product/:id")
-    .put(isAuthenticated, productUpdate)
-    .delete(isAuthenticated, productDeletion)
-    .get(getSpcificProduct)
+// Base route for managing products
+const productsBaseRoute = '/products';
 
-router.route("/reviews/").put(createProductReviews)
-router.route("/review/").get(getProductReviews).delete(deleteProductReviews)
+// Get all products
+router.route(productsBaseRoute)
+  .get(getAllProducts);
 
-module.exports = router
+// Create a new product
+router.route(`${productsBaseRoute}/create`)
+  .post(createProduct);
+
+// Update, delete, or get a specific product by its ID
+router.route(`${productsBaseRoute}/:id`)
+  .put(isAuthenticated, updateProduct)   // Update a product (requires authentication)
+  .delete(isAuthenticated, deleteProduct) // Delete a product (requires authentication)
+  .get(getSpecificProduct);              // Get a specific product
+
+// Routes for Product Reviews
+
+// Base route for managing product reviews
+const reviewsBaseRoute = '/reviews';
+
+// Create a product review
+router.route(`${reviewsBaseRoute}/create`)
+  .put(createProductReview);
+
+// Get or delete a specific product review by its ID
+router.route(`${reviewsBaseRoute}/:id`)
+  .get(getProductReviews)      // Get product reviews
+  .delete(deleteProductReview); // Delete a product review
+
+// Export the router for use in other parts of the application
+module.exports = router;

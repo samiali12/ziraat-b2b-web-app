@@ -1,25 +1,20 @@
 import axios from 'axios';
 
-const API_URL = "/api/v1/register/"
 
 // Register user
 const register = async (userData) => {
 
-    const response = await axios.post("http://localhost:8000/api/v1/signup/", userData)
-    if (response.data) {
-        localStorage.setItem('user', JSON.stringify(response.data))
-    }
+    const response = await axios.post("http://localhost:8000/api/v1/user", userData,  {
+        withCredentials: true
+    })
     return response.data
 }
 
 // login 
 const login = async (userData) => {
-
-    const response = await axios.post("http://localhost:8000/api/v1/login/", userData)
-
-    if (response.data) {
-        localStorage.setItem('user', JSON.stringify(response.data))
-    }
+    const response = await axios.post("http://localhost:8000/api/v1/users/login", userData, {
+        withCredentials: true
+    })
 
     return response.data
 }
@@ -27,7 +22,7 @@ const login = async (userData) => {
 
 // Logout user
 const logout = async () => {
-    localStorage.removeItem('user')
+    const response = await axios.post("http//localhost:8000/api/v1/users/logout")
 }
 
 const passwordResetUrl = async (email) => {

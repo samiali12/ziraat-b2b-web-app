@@ -22,7 +22,7 @@ const getAllProducts = async (request, response) => {
 }
 
 // Product Controller Functions For Creating New Product
-const productCreation = asyncErrorHandler(async (request, response) => {
+const createProduct = asyncErrorHandler(async (request, response) => {
 
     const product = await Product.create(request.body)
 
@@ -32,24 +32,8 @@ const productCreation = asyncErrorHandler(async (request, response) => {
     })
 })
 
-
-// Product Controller Fucntion For Reading Specific Product 
-const getSpcificProduct = asyncErrorHandler(async (request, response, next) => {
-
-    const product = await Product.findById(request.params.id)
-
-    if (!product) {
-        return (next(new ErrorHandler('Product Not Found', 404)))
-    }
-
-    response.status(200).json({
-        success: true,
-        product
-    })
-})
-
 // Product Controller Function For Updating Existing Product
-const productUpdate = asyncErrorHandler(async (request, response, next) => {
+const updateProduct = asyncErrorHandler(async (request, response, next) => {
 
 
     let product = await Product.findById(request.params.id)
@@ -72,8 +56,9 @@ const productUpdate = asyncErrorHandler(async (request, response, next) => {
 })
 
 
+
 // Product Controller Function to Delete  Product
-const productDeletion = asyncErrorHandler(async (request, response) => {
+const deleteProduct = asyncErrorHandler(async (request, response) => {
 
     const product = await Product.findById(request.params.id)
 
@@ -89,14 +74,31 @@ const productDeletion = asyncErrorHandler(async (request, response) => {
     })
 })
 
+// Product Controller Fucntion For Reading Specific Product
+const getSpecificProduct = asyncErrorHandler(async (request, response, next) => {
+
+    console.log(request.params.id)
+    const product = await Product.findById(request.params.id)
+
+    if (!product) {
+        return (next(new ErrorHandler('Product Not Found', 404)))
+    }
+
+    response.status(200).json({
+        success: true,
+        product
+    })
+})
+
+
 
 // User reviews on product 
-const createProductReviews = asyncErrorHandler(async (request, response, next) => {
+const createProductReview = asyncErrorHandler(async (request, response, next) => {
 
     const { rating, comment, productId } = request.body
 
     console.log(request.user)
-   
+
 
     newReview = {
         user: request.user._id,
@@ -105,14 +107,14 @@ const createProductReviews = asyncErrorHandler(async (request, response, next) =
         comment
     }
 
-   
+
     const product = await Product.findById(productId)
 
-    
+
     const isReviewed = product.reviews.find((rev) => {
         console.log(rev)
         if (rev.user.toString() === request.user._id.toString()) {
-            
+
             return true
         }
     })
@@ -163,7 +165,7 @@ const getProductReviews = asyncErrorHandler(async (request, response, next) => {
 
 })
 
-const deleteProductReviews = asyncErrorHandler(async (request, response, next) => {
+const deleteProductReview = asyncErrorHandler(async (request, response, next) => {
 
     const product = await Product.findById(request.query.productId)
 
@@ -220,11 +222,11 @@ const deleteProductReviews = asyncErrorHandler(async (request, response, next) =
 // Export the controller functions
 module.exports = {
     getAllProducts,
-    productCreation,
-    productUpdate,
-    productDeletion,
-    getSpcificProduct,
-    createProductReviews,
+    createProduct,
+    updateProduct,
+    deleteProduct,
+    getSpecificProduct,
+    createProductReview,
     getProductReviews,
-    deleteProductReviews
+    deleteProductReview,
 }

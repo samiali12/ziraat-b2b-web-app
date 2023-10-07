@@ -1,6 +1,7 @@
 import React, { useEffect, useState, } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAllProducts, resetProduct } from '../../features/productCRUDFeatures/productCRUDSlice';
+import ProductCard from '../Product/ProductCard'
 
 const FeaturedProducts = () => {
 
@@ -10,15 +11,15 @@ const FeaturedProducts = () => {
 
 
   useEffect(() => {
-
+   
     dispatch(getAllProducts())
-
+    
     if (isSuccess) {
       setProducts(products.productsData)
-      //isLoading = true
     }
-    //dispatch(resetProduct())
-  }, [dispatch, isLoading, isError, products])
+
+    dispatch(resetProduct())
+  }, [dispatch, isSuccess])
 
 
 
@@ -35,14 +36,7 @@ const FeaturedProducts = () => {
             {
 
               productsData.map((product) => (
-                <div key={product._id} className="bg-white rounded-lg shadow-lg border">
-                  <img src={product.images[0].image_url} alt={product.name} className="w-full h-48 object-cover rounded-t-lg" />
-                  <div className="p-4">
-                    <h3 className="text-lg font-semibold mb-2">{product.name}</h3>
-                    <p className="text-gray-600 mb-2">{product.category}</p>
-                    <p className="text-gray-800 font-semibold">{product.price}</p>
-                  </div>
-                </div>
+                <ProductCard product={product} key={product._id} />
               ))
 
 

@@ -4,16 +4,21 @@ import Footer from "../components/Footer/Footer";
 import Header from "../components/Header/Header";
 import FeaturedProducts from '../components/main/FeaturedProducts';
 import MetaData from '../app/MetaData';
+import ProductPageById from '../components/Product/ProductPageById';
+import NavigationBar from '../components/Header/NavigationBar';
 
 
-const HomePage = () => {
+const ProductPage = () => {
     return (
-        <Fragment>
-            <MetaData title="Home | Ziraat B2B"/>
-            <Header />
+        <>
+         <Fragment>
+           
+            <NavigationBar />
+            <ProductPageById />
             <Footer />
         </Fragment>
+        </>
     )
 }
 
-export default HomePage;
+export default ProductPage;

@@ -10,10 +10,7 @@ const userSchema = new mongoose.Schema({
 
     fullName: {
         type: String,
-        //required: [true, 'Full name is required.'],
-        //minlength: [8, 'Full Name should be at least 4 characters'],
-        //maxLength: [18, 'Full Name cann\'t be exceed 30 characters'],
-
+        default: null
     },
 
     email: {
@@ -21,12 +18,12 @@ const userSchema = new mongoose.Schema({
         unique: true,
         trim: true,
         lowercase: true,
-        
+
     },
 
     phoneNumber: {
         type: String,
-        //required: [true, 'Phone number is required.'],
+        default: null
     },
 
     password: {
@@ -36,21 +33,33 @@ const userSchema = new mongoose.Schema({
 
     companyName: {
         type: String,
+        default: null
     },
 
 
     location: {
-        country: String,
-        state: String,
-        city: String,
+        country: {
+            type: String,
+            default: null
+        },
+        state: {
+            type: String,
+            default: null
+        },
+        city: {
+            type: String,
+            default: null
+        },
     },
 
     profilePicture: {
         public_id: {
             type: String,
+            default: null
         },
         image_url: {
             type: String,
+            default: null
         },
     },
 
@@ -61,10 +70,10 @@ const userSchema = new mongoose.Schema({
 
     verified: {
         type: Boolean,
-        required: true, 
+        required: true,
         default: false
-    }, 
-   
+    },
+
 
     emailVerificationToken: String,
     emailVerificationTokenExpireDate: Date,
@@ -96,7 +105,7 @@ userSchema.methods.getJWTToken = function (next) {
 
 // Generate email verification token
 userSchema.methods.generateEmailVerificationToken = function (next) {
-    
+
     const token = crypto.randomBytes(32).toString('hex')
     this.emailVerificationToken = crypto.createHash('sha256').update(token).digest('hex')
     return token

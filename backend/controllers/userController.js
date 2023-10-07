@@ -4,11 +4,10 @@ const jwt = require('jsonwebtoken')
 const User = require('../models/userModel')
 const ErrorHandler = require('../utils/errorHandler');
 const asyncErrorHandler = require('../middleware/asyncErrorHandler');
-const { sendToken } = require('../utils/userToken');
 const sendEmail = require("../utils/messages")
 
 
-const userRegistration = asyncErrorHandler(async (request, response, next) => {
+const registerUser = asyncErrorHandler(async (request, response, next) => {
 
     // getting required attribute during the registration
     const { email, password, role } = request.body
@@ -32,14 +31,21 @@ const userRegistration = asyncErrorHandler(async (request, response, next) => {
             subject: "Ziraat-B2B Email Verification",
             message: `Click the below link to verify your email \n ${emailVerificationUrl}`
         })
-
+ 
+        
         await user.save()
+
+        request.session.user = {
+            id: user._id, email: user.email
+        }
+
+       
         response.status(200).json({
             success: true,
             message: "User Registerd Successfully",
             user
         })
-        //await sendToken(user, 200, response, "User Registered Successfully.")
+        
     }
 
     catch (error) {
@@ -90,7 +96,7 @@ const sendEmailVerification = asyncErrorHandler(async (request, response, next) 
 
 })
 
-const userLogin = asyncErrorHandler(async (request, response, next) => {
+const loginUser= asyncErrorHandler(async (request, response, next) => {
 
     const { email, password } = request.body
 
@@ -109,8 +115,6 @@ const userLogin = asyncErrorHandler(async (request, response, next) => {
     // Compare the provided password with the stored password
     const hashPassword = await bcrypt.compare(password, user.password)
 
-    console.log(hashPassword)
-
     if (!hashPassword) {
         return response.status(401).json({
             success: false,
@@ -118,15 +122,25 @@ const userLogin = asyncErrorHandler(async (request, response, next) => {
         })
     }
     else {
-        sendToken(user, 200, response, "User Login Successfully")
+        request.session.user = {
+            id: user.id,
+            email: user.email
+        }
+
+        console.log(request.session)
+
+        return response.status(200).json({
+            success: false,
+            message: "User Login Successfully",
+            data: user,
+        })
 
     }
 
 })
 
-const emailVerification = asyncErrorHandler(async (request, response, next) => {
+const verifyUserEmail= asyncErrorHandler(async (request, response, next) => {
 
-    console.log("Hello")
     const token = request.params.token
 
     const newToken = crypto.createHash('sha256').update(token).digest('hex')
@@ -155,22 +169,26 @@ const emailVerification = asyncErrorHandler(async (request, response, next) => {
     })
 })
 
-const userLogout = asyncErrorHandler(async (request, response, next) => {
+const logoutUser = asyncErrorHandler(async (request, response, next) => {
 
-    // Clear any authentication-related tokens or cookies
-    response.cookie('token', null, {
-        expires: new Date(Date.now()),
-        httpOnly: true
-    });
-
-    response.status(200).json({
-        success: true,
-        message: "Logout successfully"
-    })
-
+    try {
+        await request.session.destroy();
+        response.status(200).json({
+          message: "User is Logout Successfully",
+          success: true
+        });
+      } catch (error) {
+        console.error('Error destroying session:', error);
+        response.status(500).json({
+          message: 'Logout failed',
+          success: false
+        });
+      }
+      
+    
 })
 
-const passwordResettingUrl = asyncErrorHandler(async (request, response, next) => {
+const requestPasswordReset = asyncErrorHandler(async (request, response, next) => {
 
     const user = await User.findOne({ email: request.body.email });
 
@@ -211,7 +229,7 @@ const passwordResettingUrl = asyncErrorHandler(async (request, response, next) =
 
 })
 
-const passwordResetting = asyncErrorHandler(async (request, response, next) => {
+const resetPassword = asyncErrorHandler(async (request, response, next) => {
 
 
     resetPasswordToken = crypto.createHash('sha256').update(request.params.token).digest('hex')
@@ -277,17 +295,17 @@ const authorizationRoles = (allowedRoles) => {
 // Get User Details
 const getUserDetails = asyncErrorHandler(async (request, response, next) => {
 
-    const user = await User.findOne({ _id: request.params.id })
-
+    const user = await User.findOne({ _id: request.params.userId })
+    
     response.status(200).json({
         sucess: true,
         user
     })
 })
 
-const profileUpdate = asyncErrorHandler(async (request, response, next) => {
+const updateUserProfile = asyncErrorHandler(async (request, response, next) => {
 
-    let user = await User.findOne({ _id: request.params.id })
+    let user = await User.findOne({ _id: request.params.userId })
 
     console.log(user)
     if (!user) {
@@ -308,7 +326,7 @@ const profileUpdate = asyncErrorHandler(async (request, response, next) => {
 
 const deleteUser = asyncErrorHandler(async (request, response, next) => {
 
-    let user = await User.findOne({ _id: request.params.id })
+    let user = await User.findOne({ _id: request.params.userId })
 
     if (!user) {
         return next(new ErrorHandler("User not found", 400))
@@ -325,16 +343,15 @@ const deleteUser = asyncErrorHandler(async (request, response, next) => {
 
 // Export the controller functions
 module.exports = {
-    userRegistration,
-    userLogin,
-    emailVerification,
-    sendEmailVerification,
-    userLogout,
+    registerUser,
+    loginUser,
     getUserDetails,
+    logoutUser,
+    requestPasswordReset,
+    resetPassword,
     updatePassword,
-    passwordResettingUrl,
-    passwordResetting,
-    authorizationRoles,
     deleteUser,
-    profileUpdate
+    updateUserProfile,
+    verifyUserEmail,
+    sendEmailVerification
 }
