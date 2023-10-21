@@ -1,7 +1,11 @@
-// Import required modules and libraries.
+const os = require('os');
+console.log('Temporary directory:', os.tmpdir());
+
+
 const productsRoute = require("./routes/productRoutes");
 const userRoutes = require("./routes/userRoutes");
-const authRoute = require('./routes/authRoutes')
+const authRoute = require('./routes/authRoutes');
+const ImageUploadrouter = require("./routes/imageUploadRoutes");
 
 const errorHandlerMiddleware = require('./middleware/error');
 const cookieParser = require('cookie-parser');
@@ -9,14 +13,18 @@ const express = require('express');
 const cors = require("cors");
 const app = express();
 const bodyParser = require('body-parser');
-const session = require('./session')
-const passport = require('passport')
-const cloudinary = require('cloudinary').v2
+const session = require('./session');
+const passport = require('passport');
+const multer = require('multer');
+const fileUploader = require('express-fileupload')
 
-//------------ Express Middleware Configuration ------------//
 
-// Use the built-in middleware to parse incoming JSON data.
-app.use(express.json());
+
+
+// Express Middleware Configuration
+
+// Parse incoming JSON data.
+app.use(express.json({ limit: '10mb' }))
 
 // Enable Cross-Origin Resource Sharing (CORS) to allow requests from different origins.
 app.use(cors({
@@ -24,26 +32,20 @@ app.use(cors({
   credentials: true, // Enable cookies and sessions
 }));
 
-//------------ Configure Body Parser for Data ----------//
-
-// Use the 'body-parser' middleware to parse JSON data from request bodies.
+// Parse JSON data from request bodies.
 app.use(bodyParser.json());
 
-//------------ Cookie Parser Configuration ------------//
+app.use(fileUploader({
+  useTempFiles: true,
+  tempFileDir: 'C:\Users\Sami\AppData\Local\Temp\Ziraat',}))
 
-// Use the 'cookie-parser' middleware to parse cookies from incoming requests.
+// Cookie Parser Configuration
+
+// Parse cookies from incoming requests.
 app.use(cookieParser());
 
-cloudinary.config({ 
-  cloud_name: 'dss4xjbc8', 
-  api_key: '192813273465878', 
-  api_secret: process.env.JWT_SECRET_KEY 
-});
-
-
-// Use the session to store the user data into session
-session(app)
-
+// Use session to store user data.
+session(app);
 
 // Configure session serialization and deserialization
 passport.serializeUser((user, done) => {
@@ -56,24 +58,24 @@ passport.deserializeUser((id, done) => {
   });
 });
 
+// Error Handling Middleware
 
-
-//------------ Error Handling Middleware ------------//
-
-// Use the 'errorHandlerMiddleware' to handle errors in the application.
+// Handle errors in the application.
 app.use(errorHandlerMiddleware);
 
+// Define Routes
 
-//------------ Define Routes ------------//
-
-// Mount the 'productsRoute' middleware under the "/api/v1" path.
+// Mount 'productsRoute' middleware under the "/api/v1" path.
 app.use("/api/v1", productsRoute);
 
-// Mount the 'userRoutes' middleware under the "/api/v1" path.
+// Mount 'userRoutes' middleware under the "/api/v1" path.
 app.use("/api/v1", userRoutes);
 
-// Mount the authRoute middlware under the "/api/v1" path.
-app.use("/api/v1/", authRoute)
+// Mount 'authRoute' middleware under the "/api/v1" path.
+app.use("/api/v1/", authRoute);
+
+// Mount File uploading middleware under the "/api/v1/" path. 
+app.use("/api/v1/", ImageUploadrouter);
 
 // Export the configured Express application to be used elsewhere.
 module.exports = app;

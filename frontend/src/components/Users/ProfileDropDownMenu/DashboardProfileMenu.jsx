@@ -14,9 +14,8 @@ function classNames(...classes) {
 const imagePlaceHolder = 'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBwgHBgkIBwgKCgkLDRYPDQwMDRsUFRAWIB0iIiAdHx8kKDQsJCYxJx8fLT0tMTU3Ojo6Iys/RD84QzQ5OjcBCgoKDQwNGg8PGjclHyU3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3N//AABEIAJQAlwMBIgACEQEDEQH/xAAbAAEAAwEBAQEAAAAAAAAAAAAABAUGAQIDB//EADIQAAICAQIDBgUBCQAAAAAAAAABAgMEBREhMUESIlFhcbETMlKBoUIUNGJyc5HB0fD/xAAXAQEBAQEAAAAAAAAAAAAAAAAAAgED/8QAHBEBAQEBAAIDAAAAAAAAAAAAAAECERIxIUFR/9oADAMBAAIRAxEAPwD9xAAAAAAAAONpLd8iDm6jDHbrh37PDovUp78i29t2zb8uhUzazq/nnY0HtK6H24nqrKoue1dsZPwTMyd8PLkV4RnWrBnI5+VGKirnsvFJn0r1TKg95SU14OP+jPCt6vwRMPNrylsu7PrFkshoAAAAAAAAAAAAAFfqmY6Y/Cre1klz+lE6bUYuT5JbszF1jutlZLnJ78ehWJ1led/+ZwA6pAAAAAHqE5VzU4PaUeKZo8O9ZFEbFw35rwZmiz0S3s2WVN/Mu0idxsXIAOSgAAAAAAAAAAfPJW+Pal1g/Yy5q5cVsZacexOUH+ltF4TXkAHRgAAAAAErTJdnOr891+CKStMW+dV5bv8ADMvojRIHDpxWAAAAAAAAAADjM3nODy7XW905fnqaVmXvTjfYnzU37l4TXzAB0YAAAAABZaIoO6xv51HgvLqVpY6Im8ib6KPH+5mvTZ7XR0A4qAAAAAAAAAAAKLWKHXk/ES7tnuXp4tqhbFxsipRfRmy8rKywPrk1Oi+db/S+HofI7JAAAAAAvdHpdeO5yW0pvf7dCBpOPG69uyKlCC5NdWXyW3Ijd+myAAOagAAAAAAAAAAAABWavi9uCugu9H5vNFMafK4Y1v8AI/YzB0xU0ABbA6cPUPnj6oDQafjfs+Oov5pd6XqSggcFgAAAAAAAAAAAAAAAIupz7GDb4tbL7mdLLV8pWTVNb3jF7yfmVp1xPhNAAUwAAGoomp01z+qKZ9Cr0fKTgseeykvl80Whxs5VwABgAAAAAAAAAiZefVjd1vtWfSv8lPk512RwlLsx+mJUzazq3yNQop3W/bl4RKzJ1K65OMUq4vonxf3IQLmJGdAAUwAAAAAdTae65k/H1W6tKNqVkfHkyvBlnRocfUMe/gpdmX0y4ErcyhJx82/H2UZ7x+mXFE3H43rRghYmo1X7Rfcn4Pr6E052cUAAAVuqZrqfwaeE2u9LwRYtpLd8jL3WO26dj5ye5WZ2sted922+b6nADqkAAAAAAAAAAAAAAAALLTtQlCUab25QfBSfNFaPTmZZ0avoDzTLt1QkusUwcVvOU9sa1/wv2MwAdMJoAC2AAAAAAAAAAAAAAAAAAA02F+6Uf04+wAOFW//Z'
 
 
-const DropdownProfileMenu = ({ userId, isDashboard }) => {
+const DashboardProfileMenu = ({ userId, isDashboard }) => {
 
-  
   const { user, isError, isSuccess, isLoading, message } = useSelector(state => state.userManage.user) || {}
   const [isEmptyImageURL, setIsEmptyImageURL] = useState(true)
   const dispatch = useDispatch()
@@ -29,8 +28,6 @@ const DropdownProfileMenu = ({ userId, isDashboard }) => {
       dispatch(getUserDetails(userId))
       
       if (user?.profilePicture?.image_url) {
-        console.log("Sami  ===> ", user)
-      
         setIsEmptyImageURL(true)
        } else {
          setIsEmptyImageURL(false)
@@ -91,26 +88,6 @@ const DropdownProfileMenu = ({ userId, isDashboard }) => {
             <Menu.Item>
               {({ active }) => (
                 <Link
-                  to={`/user/profile/my-profile`}
-                  className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}
-                >
-                  Your Profile
-                </Link>
-              )}
-            </Menu.Item>
-            <Menu.Item>
-              {({ active }) => (
-                <Link
-                  to="#"
-                  className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}
-                >
-                  Settings
-                </Link>
-              )}
-            </Menu.Item>
-            <Menu.Item>
-              {({ active }) => (
-                <Link
                   to="#"
                   className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}
                 >
@@ -126,4 +103,4 @@ const DropdownProfileMenu = ({ userId, isDashboard }) => {
   )
 }
 
-export default DropdownProfileMenu;
+export default DashboardProfileMenu;

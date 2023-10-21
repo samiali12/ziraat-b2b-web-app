@@ -9,9 +9,19 @@ const getSpecificUser = async (userId) => {
 }
 
 
+const updateUserProfile = async (userId, formData) => {
+
+    const response = await axios.put(`http://localhost:8000/api/v1/users/${userId}/update-profile`, formData,  {
+        withCredentials: true
+    })
+
+    return response.data
+}
+
 
 const userManagementServices = {
-    getSpecificUser
+    getSpecificUser,
+    updateUserProfile
 }
 
 export default userManagementServices;

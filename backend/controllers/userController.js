@@ -14,7 +14,7 @@ const registerUser = asyncErrorHandler(async (request, response, next) => {
 
     if (await User.findOne({ email })) {
         return response.status(401).json({
-            message: "Email is already exits. Try different "
+            message: "Email is already exits. Try different"
         })
     }
 
@@ -31,21 +31,21 @@ const registerUser = asyncErrorHandler(async (request, response, next) => {
             subject: "Ziraat-B2B Email Verification",
             message: `Click the below link to verify your email \n ${emailVerificationUrl}`
         })
- 
-        
+
+
         await user.save()
 
         request.session.user = {
             id: user._id, email: user.email
         }
 
-       
+
         response.status(200).json({
             success: true,
             message: "User Registerd Successfully",
             user
         })
-        
+
     }
 
     catch (error) {
@@ -62,7 +62,7 @@ const sendEmailVerification = asyncErrorHandler(async (request, response, next) 
 
 
     if (!user) {
-        
+
         return response.status(401).json({
             message: "Some things wrong happening",
             success: false
@@ -82,10 +82,10 @@ const sendEmailVerification = asyncErrorHandler(async (request, response, next) 
         await user.save({ validateBeforeSave: false })
         return response.status(200).json({
             success: true,
-            message:"Email verification link is send"
+            message: "Email verification link is send"
         })
     }
-    catch(err){
+    catch (err) {
         return response.status(501).json({
             success: false,
             message: "Some things wrong happening. Try gain later"
@@ -96,13 +96,11 @@ const sendEmailVerification = asyncErrorHandler(async (request, response, next) 
 
 })
 
-const loginUser= asyncErrorHandler(async (request, response, next) => {
+const loginUser = asyncErrorHandler(async (request, response, next) => {
 
     const { email, password } = request.body
 
     const user = await User.findOne({ email }).select("+password")
-
-    //console.log(user)
 
     if (!user) {
         return response.status(401).json({
@@ -127,8 +125,6 @@ const loginUser= asyncErrorHandler(async (request, response, next) => {
             email: user.email
         }
 
-        console.log(request.session)
-
         return response.status(200).json({
             success: false,
             message: "User Login Successfully",
@@ -139,7 +135,7 @@ const loginUser= asyncErrorHandler(async (request, response, next) => {
 
 })
 
-const verifyUserEmail= asyncErrorHandler(async (request, response, next) => {
+const verifyUserEmail = asyncErrorHandler(async (request, response, next) => {
 
     const token = request.params.token
 
@@ -148,7 +144,7 @@ const verifyUserEmail= asyncErrorHandler(async (request, response, next) => {
     const user = await User.findOne({ emailVerificationToken: newToken })
 
     if (!user) {
-        console.log(user)
+
         return response.status(401).json(
             {
                 success: false,
@@ -156,7 +152,7 @@ const verifyUserEmail= asyncErrorHandler(async (request, response, next) => {
             })
     }
 
-   
+
     user.verified = true
     user.emailVerificationToken = undefined
     user.emailVerificationTokenExpireDate = undefined
@@ -174,25 +170,23 @@ const logoutUser = asyncErrorHandler(async (request, response, next) => {
     try {
         await request.session.destroy();
         response.status(200).json({
-          message: "User is Logout Successfully",
-          success: true
+            message: "User is Logout Successfully",
+            success: true
         });
-      } catch (error) {
+    } catch (error) {
         console.error('Error destroying session:', error);
         response.status(500).json({
-          message: 'Logout failed',
-          success: false
+            message: 'Logout failed',
+            success: false
         });
-      }
-      
-    
+    }
+
+
 })
 
 const requestPasswordReset = asyncErrorHandler(async (request, response, next) => {
 
     const user = await User.findOne({ email: request.body.email });
-
-    console.log(request.body.email)
 
     if (!user) {
         return response.status(401).json({
@@ -203,7 +197,7 @@ const requestPasswordReset = asyncErrorHandler(async (request, response, next) =
 
     // Get reset password token
     const passwordToken = user.generateNewPasswordToken()
-    console.log(passwordToken)
+
     await user.save({ validateBeforeSave: false })
     const resetPasswordUrl = `http://localhost:3000/password-reset/token/${passwordToken}`
     const message = `Your password reset token is \n ${resetPasswordUrl}`
@@ -239,7 +233,7 @@ const resetPassword = asyncErrorHandler(async (request, response, next) => {
     })
 
     if (!user) {
-        console.log(user)
+
         return response.status(401).json({
             success: false,
             message: "Reset password token is invalid or has been expired"
@@ -259,70 +253,69 @@ const resetPassword = asyncErrorHandler(async (request, response, next) => {
 // update user password 
 const updatePassword = asyncErrorHandler(async (request, response, next) => {
 
-    const user = await User.findOne(request.user.id).select('+password')
-    const isPassword = await User.comparePassword(request.body.oldPassword)
+    const user = await User.findOne({ _id: request.params.id }).select('+password')
+
+    const isPassword = await bcrypt.compare(request.body.currentPassword, user.password)
 
     if (!isPassword) {
-        return next(new ErrorHandler('Old password is incorrect', 400))
+        response.status(501).json({
+            success: false,
+            message: "Type correct Old Password"
+        })
     }
-
-    if (request.body.newPassword != request.body.confirmPassword) {
-        return next(new ErrorHandler('Please type same password. ', 400))
+    else {
+        user.password = request.body.newPassword;
+        await user.save().then( () => {
+            response.status(200).json({
+                success: true,
+                message: "Password is changed Successfully"
+            })
+        })
     }
-
-    user.password = request.body.newPassword;
-    await user.save()
-    sendToken(user, 200, response)
 })
-
-const authorizationRoles = (allowedRoles) => {
-    return (req, res, next) => {
-        // Assuming you have the authenticated user's role available in the request object
-        const userRole = req.user.role;
-
-        if (allowedRoles.includes(userRole)) {
-            // User has the required role, proceed with the next middleware
-            next();
-        } else {
-            // User is not authorized, send a response with appropriate status code and message
-            return new ErrorHandler(`Role ${request.user.role} cann't access this resources`)
-        }
-    };
-}
-
 
 
 // Get User Details
 const getUserDetails = asyncErrorHandler(async (request, response, next) => {
 
     const user = await User.findOne({ _id: request.params.userId })
-    
+
     response.status(200).json({
-        sucess: true,
+        success: true,
         user
     })
 })
 
 const updateUserProfile = asyncErrorHandler(async (request, response, next) => {
+    try {
+        const userId = request.params.userId;
+        const updatedUserData = request.body;
 
-    let user = await User.findOne({ _id: request.params.userId })
+        let user = await User.findOne({ _id: userId });
 
-    console.log(user)
-    if (!user) {
-        return next(new ErrorHandler("User not found", 400))
+
+        if (!user) {
+            return next(new ErrorHandler("User not found", 400));
+        }
+
+        user = await User.findByIdAndUpdate(userId, updatedUserData, {
+            new: true,
+            runValidators: true,
+            useFindAndModify: false
+        });
+
+        console.log('Updated User:', user);
+
+        response.status(200).json({
+            success: true,
+            user
+        });
+    } catch (error) {
+        console.error('Error updating user profile:', error);
+        return next(new ErrorHandler("Error updating user profile", 500));
     }
+});
 
-    user = await User.findByIdAndUpdate(request.params.id, request.body, {
-        new: true,
-        runValidators: true,
-        useFindAndModify: false
-    })
-
-    response.status(200).json({
-        sucess: true,
-        user
-    })
-})
 
 const deleteUser = asyncErrorHandler(async (request, response, next) => {
 

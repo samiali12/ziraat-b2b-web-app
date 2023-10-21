@@ -1,6 +1,8 @@
 // Import the 'app' module, which likely contains your Express.js application setup.
 const app = require("./app")
 
+const cloudinary = require('cloudinary').v2
+
 // Import the 'dbConnection' function, which establishes a connection to MongoDB.
 const dbConnection = require("./database");
 
@@ -14,6 +16,7 @@ dotenv.config({ path: 'backend/config/.env' });
 
 // Call the 'dbConnection' function to establish a connection to MongoDB.
 dbConnection()
+
 
 // Create an HTTP server using your Express.js application and listen on the specified port.
 const server = app.listen(process.env.PORT, () => {

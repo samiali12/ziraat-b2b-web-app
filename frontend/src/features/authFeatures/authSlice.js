@@ -107,6 +107,23 @@ export const resetUserPassword = createAsyncThunk('auth/passwordreset', async (d
 
 })
 
+export const updatePassword = createAsyncThunk('auth/updatePassword', async(userData, thunkApi) => {
+
+    console.log(userData.userId)
+
+    try{
+        await authServices.updatePassword(userData)
+    }catch(error){
+        const message = (error.response &&
+        error.response.data &&
+        error.response.data.message) ||
+        error.message ||
+        error.toString()
+
+        return thunkApi.rejectWithValue(message)
+    }
+})
+
 export const sendEmailVerification = createAsyncThunk('auth/email', async (data, thunkApi) => {
 
     try {
@@ -222,6 +239,24 @@ export const authSlice = createSlice({
                 state.message = action.payload
                 state.user = null
             })
+
+            .addCase(updatePassword.pending, (state) => {
+                state.isLoading = true
+            })
+            .addCase(updatePassword.fulfilled, (state, action) => {
+                state.isError = false
+                state.isSuccess = true
+                state.isLoading = false
+                state.message = action.payload
+            })
+            .addCase(updatePassword.rejected, (state, action) => {
+                state.isError = true
+                state.isSuccess = false
+                state.isLoading = false
+                state.message = action.payload
+                state.user = null
+            })
+
             .addCase(sendEmailVerification.pending, (state) => {
                 state.isLoading = true
             })

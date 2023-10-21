@@ -17,6 +17,7 @@ import ProductPage from './pages/ProductPage';
 import PasswordSetting from './components/Users/ProfileManagement/EmptyState/PasswordSetting/PasswordSetting';
 
 function App() {
+
   return (
     <Router>
       <AppContent />
@@ -25,6 +26,9 @@ function App() {
 }
 
 function AppContent() {
+
+
+
   const location = useLocation();
   const isProfilePage = location.pathname.startsWith('/user/profile');
 

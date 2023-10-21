@@ -11,6 +11,7 @@ const userSchema = new mongoose.Schema({
     fullName: {
         type: String,
         default: null
+       
     },
 
     email: {
@@ -29,37 +30,44 @@ const userSchema = new mongoose.Schema({
     password: {
         type: String,
         select: false
+
     },
 
     companyName: {
         type: String,
-        default: null
+        default: undefined
+      
     },
 
 
     location: {
         country: {
             type: String,
-            default: null
+             default: undefined
+           
         },
         state: {
             type: String,
-            default: null
+            default: undefined
+            
         },
         city: {
             type: String,
-            default: null
+            default: undefined
+            
         },
     },
 
     profilePicture: {
         public_id: {
             type: String,
-            default: null
+             default: undefined
+            
         },
         image_url: {
             type: String,
-            default: null
+            default: undefined
+            
         },
     },
 

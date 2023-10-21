@@ -2,7 +2,6 @@ const asyncErrorHandler = require("./asyncErrorHandler");
 
 const isAuthenticated = asyncErrorHandler(async (request, response, next) => {
 
-  console.log(request.session && request.session.user)
   if (request.session) {
     // User is logged in
     
