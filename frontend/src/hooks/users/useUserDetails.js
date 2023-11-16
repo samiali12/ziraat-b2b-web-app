@@ -6,7 +6,6 @@ import useAuthentication from '../auth/useAuthentication';
 function useUserDetails() {
     const { authenticated, userId } = useAuthentication(); // Use the authentication custom hook
 
-    console.log("Password ==> ", userId)
     const dispatch = useDispatch();
     const { user, isSuccess, isError } = useSelector((state) => state.userManage); // Replace 'state.user' with your actual Redux state path
     const [error, setError] = useState(null); // State variable to store error information

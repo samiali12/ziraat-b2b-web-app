@@ -13,7 +13,13 @@ const getProductById = async (data) => {
     return response.data
 }
 
+const addNewProduct = async (data) => {
+    const response = await axios.post("http://localhost:8000/api/v1/products/create",data)
+    return response.data;
+}
+
 const productsCRUDServices = {
+    addNewProduct,
     getAllProducts,
     getProductById
 }

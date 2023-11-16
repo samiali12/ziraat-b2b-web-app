@@ -29,8 +29,7 @@ const DropdownProfileMenu = ({ userId, isDashboard }) => {
       dispatch(getUserDetails(userId))
       
       if (user?.profilePicture?.image_url) {
-        console.log("Sami  ===> ", user)
-      
+        
         setIsEmptyImageURL(true)
        } else {
          setIsEmptyImageURL(false)
@@ -41,12 +40,14 @@ const DropdownProfileMenu = ({ userId, isDashboard }) => {
   }, [])
 
   const logoutUser = async () => {
-    dispatch(logoutUser())
+     const response = await axios.get("http://localhost:8000/api/v1/users/logout")
+     window.location.reload()
   }
 
   return (
 
     <div className="flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
+      <Link to="/seller/dashboard" className="text-[#28844b] text-lg font-semibold mr-2">Switch selling</Link>
       <button
         type="button"
         className="relative rounded-full  p-1 text-gray-400 hover:text-[#28844b] focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
@@ -91,26 +92,27 @@ const DropdownProfileMenu = ({ userId, isDashboard }) => {
             <Menu.Item>
               {({ active }) => (
                 <Link
-                  to={`/user/profile/my-profile`}
+                  to={`/user/account`}
                   className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}
                 >
-                  Your Profile
+                  Account
                 </Link>
               )}
             </Menu.Item>
             <Menu.Item>
               {({ active }) => (
                 <Link
-                  to="#"
-                  className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}
+                  to="/seller/dashboard"
+                  className={classNames(active ? 'text-[#28844b] m-2' : '', 'block px-4 py-2 m-2 text-sm text-white bg-[#28844b]')}
                 >
-                  Settings
+                  Dashboard
                 </Link>
               )}
             </Menu.Item>
             <Menu.Item>
               {({ active }) => (
                 <Link
+                onClick={logoutUser}
                   to="#"
                   className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}
                 >

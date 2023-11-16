@@ -35,7 +35,6 @@ const passwordResetUrl = async (email) => {
 
 const updatePassword = async (data) => {
 
-    console.log(data.userData)
 
     const response = await axios.put(`http://localhost:8000/api/v1/users/update-password/${data.userId}`, data.userData)
     return response.data

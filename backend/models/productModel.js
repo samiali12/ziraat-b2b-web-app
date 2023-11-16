@@ -1,10 +1,13 @@
 const mongoose = require('mongoose')
 
 const productSchema = mongoose.Schema({
-
+    seller: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref:  'User' // name of the seller model
+    },
     name: {
         type: String,
-        required:  [true, "Please enter product name"]
+        required: [true, "Please enter product name"]
     },
     description: {
         type: String,
@@ -33,7 +36,7 @@ const productSchema = mongoose.Schema({
     ],
     category: {
         type: String,
-        required:  [true, "Please enter product category"],
+        required: [true, "Please enter product category"],
     },
     stock: {
         type: Number,
@@ -76,4 +79,4 @@ const productSchema = mongoose.Schema({
     }
 })
 
-module.exports = mongoose.model('Product',productSchema)
+module.exports = mongoose.model('Product', productSchema)

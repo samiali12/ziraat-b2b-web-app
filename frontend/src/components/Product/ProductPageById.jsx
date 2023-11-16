@@ -6,7 +6,7 @@ import MetaData from "../../app/MetaData";
 import RatingStars from "../ratings/Rating";
 import ReviewsSection from "../ratings/Review";
 import Review from "../ratings/Review";
-
+import axios from "axios";
 
 
 const ProductPageById = () => {
@@ -37,10 +37,13 @@ const ProductPageById = () => {
         // Add more fake reviews as needed
     ];
 
+    const [quantity, setQuantity] = useState(1);
+    const [unit, setUnit] = useState('Kilograms');
+    const [deliverySchedule, setDeliverySchedule] = useState('One-time');
+
     const dispatch = useDispatch()
     const { id } = useParams(); // Get the product id from the URL params
     const [product, setProduct] = useState(null); // Initialize the product state to null
-    let { isLoading, isSuccess, isError, products } = useSelector(state => state.product)
 
     const [selectedImage, setSelectedImage] = useState(null);
     const [currentImage, setCurrentImage] = useState(0);
@@ -56,14 +59,22 @@ const ProductPageById = () => {
     };
 
     useEffect(() => {
-        dispatch(getProductById(id))
-        if (isSuccess) {
-            console.log(products.product)
-            setProduct(products.product)
-        }
-    }, [id, dispatch, isSuccess])
 
-    if (isLoading || isError || !product) {
+        const getProductDetail = async () => {
+            try {
+                const response = await axios.get(`http://localhost:8000/api/v1/products/${id}`)
+                if (response.data.success) {
+                    setProduct(response.data.product)
+                }
+            } catch (error) {
+
+            }
+        }
+
+        getProductDetail()
+    }, [id])
+
+    if (!product) {
         return (
             <div className="container max-w-7x1 mx-auto px-4 py-10">
 
@@ -129,22 +140,65 @@ const ProductPageById = () => {
                         <h1 className="text-small font-semibold">Description</h1>
                         <p className="text-gray-600 mt-2 text-justify">{product.description}</p>
                     </div>
-
-
-                    <div className="m-4">
-                        <span className="text-2xl font-semibold">${product.price}</span>
-                        <button className="ml-4 bg-[#28844b] hover:bg-[#28844bef] text-white font-bold py-2 px-4 rounded">
-                            Add to Cart
-                        </button>
-                    </div>
                 </div>
             </div>
 
+            <div className="mt-10 flex p-2 shadow-lg border">
+                <div className="m-4 w-full flex flex-col md:flex-row items-start md:items-center justify-around space-y-4 md:space-y-0 md:space-x-4">
+
+                    <div className="flex flex-col md:flex-row items-start md:items-center space-y-2 md:space-y-0 md:space-x-2 w-full md:w-auto">
+                        <label htmlFor="quantity" className="text-lg font-semibold">
+                            Quantity:
+                        </label>
+                        <input id="quantity" type="number" min="1" step="1" className="shadow-sm border p-2 w-full md:w-auto" />
+                    </div>
+
+                    <div className="relative flex flex-col md:flex-row items-start md:items-center space-y-2 md:space-y-0 md:space-x-2 w-full md:w-auto">
+                        <label htmlFor="delivery-schedule" className="block text-lg font-semibold">
+                            Units:
+                        </label>
+
+                        <select
+                            className="block appearance-none border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-50"
+                            value={unit} onChange={(e) => setUnit(e.target.value)}>
+                            <option>Kilograms</option>
+                            <option>Tons</option>
+                            {/* Add more options as needed */}
+                        </select>
+
+                        <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                            <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" /></svg>
+                        </div>
+                    </div>
+
+
+                    <div className="relative flex flex-col md:flex-row items-start md:items-center space-y-2 md:space-y-0 md:space-x-2 w-full md:w-auto">
+                        <label htmlFor="delivery-schedule" className="block text-lg font-semibold">
+                            Delivery Schedule:
+                        </label>
+                        <select id="delivery-schedule" value={deliverySchedule} onChange={(e) => setDeliverySchedule(e.target.value)} className="appearance-none border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-50">
+                            <option>One-time</option>
+                            <option>Weekly</option>
+                            <option>Monthly</option>
+                            {/* Add more options as needed */}
+                        </select>
+
+                        <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                            <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" /></svg>
+                        </div>
+                    </div>
+
+                    <button className="w-full md:w-auto bg-[#28844b] hover:bg-[#28844bef] text-white font-bold py-2 px-4 rounded">
+                        Request Quote
+                    </button>
+                </div>
+
+            </div>
 
             <div className="max-w-7xl mx-auto mt-10 px-4">
                 <h2 className="text-small font-semibold uppercase py-10">Recent Reviews</h2>
                 {
-                    fakeReviews.map( (review) => (
+                    fakeReviews.map((review) => (
                         <Review key={review.userName} reviewer={review.userName} comment={review.comment} rating={review.rating} time={review.timestamp} />
                     ))
                 }

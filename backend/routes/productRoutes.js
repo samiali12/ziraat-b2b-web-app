@@ -4,6 +4,7 @@ const router = express.Router();
 // Import product controller functions
 const {
   getAllProducts,
+  getProductBySellerId,
   createProduct,
   updateProduct,
   deleteProduct,
@@ -11,6 +12,7 @@ const {
   createProductReview,
   getProductReviews,
   deleteProductReview,
+
 } = require('../controllers/productsController');
 
 // Import authentication and authorization middleware
@@ -26,15 +28,21 @@ const productsBaseRoute = '/products';
 router.route(productsBaseRoute)
   .get(getAllProducts);
 
+router.route(`${productsBaseRoute}/seller/:id`).get(getProductBySellerId)
+
 // Create a new product
 router.route(`${productsBaseRoute}/create`)
   .post(createProduct);
 
 // Update, delete, or get a specific product by its ID
 router.route(`${productsBaseRoute}/:id`)
-  .put(isAuthenticated, updateProduct)   // Update a product (requires authentication)
-  .delete(isAuthenticated, deleteProduct) // Delete a product (requires authentication)
+  .put(updateProduct)   // Update a product (requires authentication)
+  .delete(deleteProduct) // Delete a product (requires authentication)
   .get(getSpecificProduct);              // Get a specific product
+
+
+
+
 
 // Routes for Product Reviews
 

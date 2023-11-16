@@ -39,9 +39,30 @@ const userSchema = new mongoose.Schema({
       
     },
 
+    sales: {
+        amount: {
+            type: Number,
+            required: true,
+            default: 0,
+        },
+        date: {
+            type: Date,
+            default: Date.now,
+        }
+    },
+    
+    productCount: {
+        type: Number,
+        default: 0,
+    },
 
     location: {
-        country: {
+        addressLine1: {
+            type: String,
+             default: undefined
+           
+        },
+        addressLine2: {
             type: String,
              default: undefined
            
@@ -56,6 +77,14 @@ const userSchema = new mongoose.Schema({
             default: undefined
             
         },
+        postalCode: {
+            type: String,
+            default: undefined
+        },
+        country: {
+            type: String,
+            default: "Pakistan"
+        }
     },
 
     profilePicture: {
@@ -69,6 +98,11 @@ const userSchema = new mongoose.Schema({
             default: undefined
             
         },
+    },
+
+    currentRole: {
+        type: String,
+         default: "buyer",
     },
 
     role: {

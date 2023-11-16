@@ -27,10 +27,6 @@ const Login = () => {
             [name]: value,
         }));
 
-        setErrorMessage(null)
-        setSuccessMessage(null)
-
-
     }
 
 

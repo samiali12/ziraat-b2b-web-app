@@ -16,6 +16,16 @@ import ProductPageById from './components/Product/ProductPageById';
 import ProductPage from './pages/ProductPage';
 import PasswordSetting from './components/Users/ProfileManagement/EmptyState/PasswordSetting/PasswordSetting';
 
+
+import DashboardSidebar from './components/SellerDashboard/Sidebar/DashboardSidebar';
+import SellerDashboard from './components/SellerDashboard/EmptyState/SellerDashboardPage/SellerDashboard';
+import SellerProducts from './components/SellerDashboard/EmptyState/SellerProductPage/SellerProducts';
+import UserAccountPage from './pages/UserAccountPages/UserAccountPage';
+import UserProfileInfoPage from './pages/UserAccountPages/UserProfileInfoPage';
+import CategoryProductPage from './pages/CategoryProductsPage';
+
+
+
 function App() {
 
   return (
@@ -31,10 +41,11 @@ function AppContent() {
 
   const location = useLocation();
   const isProfilePage = location.pathname.startsWith('/user/profile');
+  const isDashboardPage = location.pathname.startsWith('/seller/')
 
   return (
     <>
-     
+
       <div className="">
         <Routes>
           <Route path="/" element={<HomePage />} />
@@ -51,20 +62,29 @@ function AppContent() {
         </Routes>
       </div>
 
-      {/* Define the sidebar route separately */}
-      <div className="flex">
-        {isProfilePage && <Sidebar />}
-          <Routes>
-            <Route path="/user/profile/my-profile" element={<ProfileInfo />} />
-            <Route path="/user/profile/password-change" element={<PasswordSetting />} />
-          </Routes>
-      </div>
+
+      {/* Define the user profile route separately */}
+      <Routes>
+        <Route path="/user/account" element={<UserAccountPage />} />
+        <Route path="/user/account/manage-profile" element={<UserProfileInfoPage />} />
+      </Routes>
+
 
       {/* Add other routes as needed */}
+      <div className="flex">
+        {isDashboardPage && <DashboardSidebar />}
+        <Routes>
+          <Route path="/seller/dashboard" element={<SellerDashboard />} />
+          <Route path="/seller/products" element={<SellerProducts />} />
+        </Routes>
+      </div>
+  
+
       <Routes>
-        <Route path="/profile" element={<DashboardPage />} />
-        <Route path="/product/:id" element={<ProductPageById />} />
+        <Route path="/category/:categoryName" element={<CategoryProductPage />} />
       </Routes>
+
+
     </>
   );
 }

@@ -12,7 +12,6 @@ const ProductPage = () => {
     return (
         <>
          <Fragment>
-           
             <NavigationBar />
             <ProductPageById />
             <Footer />

@@ -5,15 +5,18 @@ const Product = require('../models/productModel');
 const ErrorHandler = require('../utils/errorHandler');
 const asyncErrorHandler = require('../middleware/asyncErrorHandler');
 const Features = require('../utils/features');
+const User = require('../models/userModel')
+
+const cloudinary = require('cloudinary')
 
 // Products Controller Functions for getting all products 
 const getAllProducts = async (request, response) => {
 
-    const resultPerPage = 8;
+    //const resultPerPage = 8;
+    //const apiFeatures = new Features(Product.find(), request.query).search().filter().pagination(resultPerPage)
+    //const productsData = await apiFeatures.query;
 
-    const apiFeatures = new Features(Product.find(), request.query).search().filter().pagination(resultPerPage)
-
-    const productsData = await apiFeatures.query;
+    const productsData =  await Product.find().populate('seller', 'fullName email profilePicture location')
 
     response.status(200).json({
         success: true,
@@ -21,20 +24,79 @@ const getAllProducts = async (request, response) => {
     })
 }
 
+// Get Products By Seller Id
+
+const getProductBySellerId = async (request, response) => {
+
+    console.log(request.params.id)
+
+    const products = await Product.find({ seller: request.params.id })
+
+    response.status(200).json({
+        success: true,
+        products,
+    })
+
+}
+
 // Product Controller Functions For Creating New Product
 const createProduct = asyncErrorHandler(async (request, response) => {
 
+    let images = []
+    let imagesLinks = []
+
+    if (typeof request.body.images === "string") {
+        images.push(request.body.images)
+    } else {
+        images = request.body.images
+    }
+
+    for (let i = 0; i < images.length; i++) {
+        const result = await cloudinary.v2.uploader.upload(images[i], { folder: request.body.seller })
+
+        imagesLinks.push(
+            {
+                public_id: result.public_id,
+                image_url: result.secure_url
+            }
+        )
+    }
+
+    request.body.images = imagesLinks
+
     const product = await Product.create(request.body)
 
-    response.status(201).json({
+    response.status(200).json({
         success: true,
         product
     })
+
 })
 
 // Product Controller Function For Updating Existing Product
 const updateProduct = asyncErrorHandler(async (request, response, next) => {
+    console.log(request.body)
+    let images = []
+    let imagesLinks = []
 
+    if (typeof request.body.images === "string") {
+        images.push(request.body.images)
+    } else {
+        images = request.body.images
+    }
+
+    for (let i = 0; i < images.length; i++) {
+        const result = await cloudinary.v2.uploader.upload(images[i], { folder: request.body.seller })
+
+        imagesLinks.push(
+            {
+                public_id: result.public_id,
+                image_url: result.secure_url
+            }
+        )
+    }
+
+    request.body.images = imagesLinks
 
     let product = await Product.findById(request.params.id)
 
@@ -50,7 +112,7 @@ const updateProduct = asyncErrorHandler(async (request, response, next) => {
     })
 
     response.status(200).json({
-        sccess: true,
+        success: true,
         product,
     })
 })
@@ -60,11 +122,27 @@ const updateProduct = asyncErrorHandler(async (request, response, next) => {
 // Product Controller Function to Delete  Product
 const deleteProduct = asyncErrorHandler(async (request, response) => {
 
+    let imagesPublicId = []
+    let productFolderName = ""
+
     const product = await Product.findById(request.params.id)
+    productFolderName = product.seller
+
+    product.images.map((product) => (
+        cloudinary.uploader.destroy(product.public_id, function (error, result) {
+            if (error) {
+                console.error(error);
+            } else {
+                console.log(result);
+                console.log(`Image with public ID ${public_id} has been deleted.`);
+            }
+        })
+    ))
 
     if (!product) {
         return (next(new ErrorHandler('Product Not Found', 404)))
     }
+
 
     await Product.findByIdAndRemove(request.params.id)
 
@@ -77,7 +155,6 @@ const deleteProduct = asyncErrorHandler(async (request, response) => {
 // Product Controller Fucntion For Reading Specific Product
 const getSpecificProduct = asyncErrorHandler(async (request, response, next) => {
 
-    console.log(request.params.id)
     const product = await Product.findById(request.params.id)
 
     if (!product) {
@@ -221,6 +298,7 @@ const deleteProductReview = asyncErrorHandler(async (request, response, next) =>
 
 // Export the controller functions
 module.exports = {
+    getProductBySellerId,
     getAllProducts,
     createProduct,
     updateProduct,

@@ -9,10 +9,9 @@ import DropdownProfileMenu from '../Users/ProfileDropDownMenu/DropDownProfileMen
 
 
 const navigation = [
-  { name: 'Home', to: '/', current: true },
-  { name: 'Services', to: '', current: false },
-  { name: 'Products', to: '', current: false },
-  { name: 'About us', to: '', current: false },
+  { name: 'Business Solution', to: '/', current: false, isAuth: false},
+  { name: 'Explore Services', to: '', current: false, isAuth: false },
+  { name: 'Abouts', to: '', current: false, isAuth: false },
 ]
 
 function classNames(...classes) {
@@ -63,7 +62,7 @@ const NavigationBar = () => {
                   )}
                 </Disclosure.Button>
               </div>
-              <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
+              <div className="flex flex-1 items-center justify-center sm:justify-start">
                 <div className="flex flex-shrink-0 items-center">
                   <img
                     className="h-12 w-auto"
@@ -74,14 +73,14 @@ const NavigationBar = () => {
 
 
                 <div className="hidden sm:ml-12 sm:block">
-                  <div className="flex space-x-4">
+                  <div className="flex items-center justify-center space-x-6">
                     {navigation.map((item) => (
                       <Link
                         key={item.name}
                         href={item.to}
                         className={classNames(
-                          item.current ? 'bg-[#28844b] text-white' : 'text-gray-700 hover:bg-[#28844b] hover:text-white',
-                          'rounded-md px-3 py-2 text-base font-medium'
+                          item.current ? 'bg-[#28844b] text-white' : 'text-[#222325] hover:bg-[#28844b] hover:text-white',
+                          'rounded-md px-3 py-2 text-base font-semibold'
                         )}
                         aria-current={item.current ? 'page' : undefined}
                       >
@@ -114,21 +113,18 @@ const NavigationBar = () => {
                 ) : (
 
                   <div className="hidden md:flex items-center space-x-6">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-8 text-gray-400">
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.75a.75.75 0 110-1.5.75.75 0 010 1.5zM12 12.75a.75.75 0 110-1.5.75.75 0 010 1.5zM12 18.75a.75.75 0 110-1.5.75.75 0 010 1.5z" />
-                    </svg>
 
 
                     <Link
                       to="/login"
-                      className="text-gray-700
-                                    rounded-md px-3 py-2 text-base font-medium">
+                      className="text-black
+                                    rounded-md px-3 py-2 text-base font-semibold">
                       Login
                     </Link>
                     <Link
                       to="/signup"
-                      className="text-white bg-[#28844b] hover:bg-[#28844bdc] hover:text-white
-                                    rounded-md px-3 py-2 text-base font-medium">
+                      className="text-[#28844b] border border-[#28844b] hover:bg-[#28844bdc] hover:text-white
+                                    rounded-md px-3 py-2 text-base font-semibold">
                       Sign up
                     </Link>
                   </div>
