@@ -2,14 +2,23 @@ import axios from "axios"
 
 
 
-const getAllProducts = async () => {
-    const response = await axios.get("http://localhost:8000/api/v1/products")
+const getAllProducts = async ( ) => {
+    
+    const response = await axios.get(`http://localhost:8000/api/v1/products`)
+   
+    return response.data
+}
+
+const getProductByCategory = async (categoryName) => {
+    console.log("Category ===> ", categoryName)
+    const response = await axios.get(`http://localhost:8000/api/v1/products/category/${categoryName}`)
+   
     return response.data
 }
 
 const getProductById = async (data) => {
-    console.log(data)
-    const response = await axios.get(`http://localhost:8000/api/v1/products/64fb084629656527dfb9213d`)
+    const id = data
+    const response = await axios.get(`http://localhost:8000/api/v1/products/${id}`)
     return response.data
 }
 
@@ -21,6 +30,7 @@ const addNewProduct = async (data) => {
 const productsCRUDServices = {
     addNewProduct,
     getAllProducts,
+    getProductByCategory,
     getProductById
 }
 

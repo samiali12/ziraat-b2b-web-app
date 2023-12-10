@@ -5,7 +5,7 @@ import { BiImage } from 'react-icons/bi'
 import { addNewProduct } from '../../features/productCRUDFeatures/productCRUDSlice';
 
 import useAuthentication from '../../hooks/auth/useAuthentication';
-import Alert from '../Alert/Alert';
+
 
 
 const AddProductModal = ({ setFlag, open, onClose, onSubmit }) => {
@@ -93,8 +93,6 @@ const AddProductModal = ({ setFlag, open, onClose, onSubmit }) => {
 
     setErrorMessage(null)
     setSuccessMessage(null)
-
-
   };
 
   // A function that handles the form submit event
@@ -102,6 +100,7 @@ const AddProductModal = ({ setFlag, open, onClose, onSubmit }) => {
     e.preventDefault();
     if (userId !== null) {
       product.images = imageFiles
+      console.log(imageFiles)
       product.seller = userId
       dispatch(addNewProduct(product))
     }

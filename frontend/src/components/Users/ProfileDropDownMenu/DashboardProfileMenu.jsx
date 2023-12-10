@@ -44,6 +44,7 @@ const DashboardProfileMenu = ({ userId, isDashboard }) => {
   return (
 
     <div className="flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
+       <Link to="/" className="text-[#28844b] text-lg font-semibold mr-2">Switch buying</Link>
       <button
         type="button"
         className="relative rounded-full  p-1 text-gray-400 hover:text-[#28844b] focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"

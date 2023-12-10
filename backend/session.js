@@ -2,7 +2,7 @@ const session = require('express-session')
 const MongoDBStore = require('connect-mongodb-session')(session)
 
 const store = new MongoDBStore({
-    uri: 'mongodb://127.0.0.1:27017/sessions',
+    uri: 'mongodb+srv://samiali:tnz4LyYgMfQEuKoz@cluster0.5aycxc3.mongodb.net/sessions?retryWrites=true&w=majority',
     collection: 'sessions',
 });
 

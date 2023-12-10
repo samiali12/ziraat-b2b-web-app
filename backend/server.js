@@ -19,7 +19,7 @@ dbConnection()
 
 
 // Create an HTTP server using your Express.js application and listen on the specified port.
-const server = app.listen(process.env.PORT, () => {
+const server = app.listen(process.env.PORT || 8000, () => {
   console.log(`Starting development server at http://127.0.0.1:${process.env.PORT}`);
 });
 

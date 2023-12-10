@@ -12,6 +12,7 @@ const {
   createProductReview,
   getProductReviews,
   deleteProductReview,
+  getProductsByCategory
 
 } = require('../controllers/productsController');
 
@@ -24,25 +25,27 @@ const { isAuthenticated } = require('../middleware/authentication');
 // Base route for managing products
 const productsBaseRoute = '/products';
 
-// Get all products
-router.route(productsBaseRoute)
+
+// Get all products by category
+router.route(`${productsBaseRoute}`)
   .get(getAllProducts);
 
-router.route(`${productsBaseRoute}/seller/:id`).get(getProductBySellerId)
 
 // Create a new product
 router.route(`${productsBaseRoute}/create`)
   .post(createProduct);
 
-// Update, delete, or get a specific product by its ID
+  // Update, delete, or get a specific product by its ID
 router.route(`${productsBaseRoute}/:id`)
-  .put(updateProduct)   // Update a product (requires authentication)
-  .delete(deleteProduct) // Delete a product (requires authentication)
-  .get(getSpecificProduct);              // Get a specific product
+.put(updateProduct)   // Update a product (requires authentication)
+.delete(deleteProduct) // Delete a product (requires authentication)
+.get(getSpecificProduct); // Get a specific product
 
+// Get all products by category
+router.route(`${productsBaseRoute}/category/:categoryName`)
+  .get(getProductsByCategory);
 
-
-
+router.route(`${productsBaseRoute}/seller/:id`).get(getProductBySellerId)
 
 // Routes for Product Reviews
 

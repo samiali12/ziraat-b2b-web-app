@@ -1,7 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-router-dom';
-import Sidebar from './components/Users/ProfileManagement/Sidebar/Sidebar';
-import ProfileInfo from './components/Users/ProfileManagement/EmptyState/ProfileInfo/ProfileInfo';
+
 import HomePage from './pages/HomePage';
 import ProductsPage from './pages/ProductsPage';
 import ServicesPage from './pages/ServicesPage';
@@ -11,19 +10,23 @@ import EmailVerification from './components/Auth/Verification/EmailVerification'
 import EmailVerified from './components/Auth/Verification/EmailVerified';
 import PasswordResetUrl from './components/Auth/Password Resetting/PasswordResetUrl';
 import UserPasswordReset from './components/Auth/Password Resetting/UserPasswordReset';
-import DashboardPage from './pages/DashboardPage';
+
 import ProductPageById from './components/Product/ProductPageById';
 import ProductPage from './pages/ProductPage';
 import PasswordSetting from './components/Users/ProfileManagement/EmptyState/PasswordSetting/PasswordSetting';
 
 
 import DashboardSidebar from './components/SellerDashboard/Sidebar/DashboardSidebar';
-import SellerDashboard from './components/SellerDashboard/EmptyState/SellerDashboardPage/SellerDashboard';
-import SellerProducts from './components/SellerDashboard/EmptyState/SellerProductPage/SellerProducts';
+
+
 import UserAccountPage from './pages/UserAccountPages/UserAccountPage';
 import UserProfileInfoPage from './pages/UserAccountPages/UserProfileInfoPage';
 import CategoryProductPage from './pages/CategoryProductsPage';
+import SearchProductPage from './pages/SearchProductsPage';
 
+import SellerDashboardPage from './pages/SellerDashboardPages/SellerDashboardPage';
+import SellerProductsPage from './pages/SellerDashboardPages/SellerProductsPage';
+import SellerRFQSPage from './pages/SellerDashboardPages/SellerRFQSPage';
 
 
 function App() {
@@ -69,16 +72,19 @@ function AppContent() {
         <Route path="/user/account/manage-profile" element={<UserProfileInfoPage />} />
       </Routes>
 
+      <Routes>
+        <Route path="/search-results" element={<SearchProductPage />} />
+      </Routes>
 
-      {/* Add other routes as needed */}
+
       <div className="flex">
         {isDashboardPage && <DashboardSidebar />}
         <Routes>
-          <Route path="/seller/dashboard" element={<SellerDashboard />} />
-          <Route path="/seller/products" element={<SellerProducts />} />
+          <Route path="/seller/dashboard" element={<SellerDashboardPage />} />
+          <Route path="/seller/products" element={<SellerProductsPage/>} />
+          <Route path="/seller/quotesList" element = {<SellerRFQSPage />} />
         </Routes>
       </div>
-  
 
       <Routes>
         <Route path="/category/:categoryName" element={<CategoryProductPage />} />

@@ -5,6 +5,4 @@ const sendMessage = asyncErrorHandler(async (request, response) => {
 
     const { senderId, receiverId, messageContent } = request.body
 
-    
-
 })

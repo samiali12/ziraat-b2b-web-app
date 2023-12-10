@@ -4,7 +4,9 @@ console.log('Temporary directory:', os.tmpdir());
 
 const productsRoute = require("./routes/productRoutes");
 const userRoutes = require("./routes/userRoutes");
+const requestQuoteRoute = require('./routes/requestQuoteRoute')
 const authRoute = require('./routes/authRoutes');
+const searchRoute = require('./routes/searchRoute')
 const ImageUploadrouter = require("./routes/imageUploadRoutes");
 
 const errorHandlerMiddleware = require('./middleware/error');
@@ -74,8 +76,13 @@ app.use("/api/v1", userRoutes);
 // Mount 'authRoute' middleware under the "/api/v1" path.
 app.use("/api/v1/", authRoute);
 
+// Mount 'request-quote' middle under the '/api/v1/' path
+app.use("/api/v1/", requestQuoteRoute)
+
 // Mount File uploading middleware under the "/api/v1/" path. 
 app.use("/api/v1/", ImageUploadrouter);
+
+app.use('/api/v1', searchRoute)
 
 // Export the configured Express application to be used elsewhere.
 module.exports = app;

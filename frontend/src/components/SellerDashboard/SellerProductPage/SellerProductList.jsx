@@ -2,13 +2,11 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import { PlusIcon, PencilIcon, TrashIcon } from "@heroicons/react/24/outline";
-import AddProductModal from "../../../Modal/AddProductModal";
-import useAuthentication from "../../../../hooks/auth/useAuthentication";
-import Alert from "../../../Alert/Alert";
-import UpdateProductModal from "../../../Modal/UpdateProductModal";
-
-
-
+import useAuthentication from "../../../hooks/auth/useAuthentication";
+import Alert from "../../Alert/Alert";
+import UpdateProductModal from "../../Modal/UpdateProductModal";
+import AddProductModal from "../../Modal/AddProductModal";
+import { useTable } from 'react-table';
 
 const SellerProductList = ({ setFlag }) => {
 

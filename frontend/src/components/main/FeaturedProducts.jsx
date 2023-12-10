@@ -11,27 +11,25 @@ const FeaturedProducts = () => {
 
 
   useEffect(() => {
-   
     dispatch(getAllProducts())
     
-    if (isSuccess) {
-      setProducts(products.productsData)
+    if (isSuccess && products.productsData) {
+      setProducts(products.productsData)      
     }
 
-    dispatch(resetProduct())
-  }, [dispatch, isSuccess])
+  }, [dispatch, products])
 
 
 
   return (
-    <div className="container max-w-7x1 mx-auto px-4 py-10">
-      <h2 className="text-[#404145] text-[32px] font-bold text-center py-5">Featured Products</h2>
+    <div className="mx-auto max-w-7xl py-5 px-10 mt-5">
+      <h2 className="text-[#404145] text-[28px] font-bold text-center py-5">Featured Products</h2>
 
 
       {
-        !(isLoading && productsData.length < 0) ? (
+        !(productsData.length < 0) ? (
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-4">
 
             {
 

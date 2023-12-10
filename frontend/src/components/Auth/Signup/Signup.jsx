@@ -5,8 +5,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { userRegister, resetUser } from '../../../features/authFeatures/authSlice';
 import LogoImage from '../../../app/LogoImage';
 import MetaData from '../../../app/MetaData';
-import BtnSignInWithGoogle from '../../Buttons/BtnSignInWithGoogle';
-import NavigationBar from '../../Header/NavigationBar';
 
 
 const Signup = () => {

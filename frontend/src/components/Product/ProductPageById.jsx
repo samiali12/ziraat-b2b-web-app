@@ -37,7 +37,7 @@ const ProductPageById = () => {
         // Add more fake reviews as needed
     ];
 
-    const [quantity, setQuantity] = useState(1);
+    const [quantity, setQuantity] = useState(1); // Initial quantity state
     const [unit, setUnit] = useState('Kilograms');
     const [deliverySchedule, setDeliverySchedule] = useState('One-time');
 
@@ -58,10 +58,39 @@ const ProductPageById = () => {
         );
     };
 
+    const handleQuantityChange = (event) => {
+        // Update the quantity state when the input changes
+        setQuantity(parseInt(event.target.value, 10)); // Parse input value to an integer
+    };
+
+    const requestForQuote = async() => {
+
+        try {
+            const requestData = {
+                productId: product._id,
+                quantity,
+                unit,
+                deliverySchedule,
+                // Add other necessary fields
+            };
+
+            const response = await axios.post('http://localhost:8000/api/v1/quote-request', requestData);
+
+            if (response.data.success) {
+                // Handle success, show confirmation, etc.
+                console.log('Quote request sent successfully');
+            }
+        } catch (error) {
+            // Handle error
+            console.error('Error sending quote request:', error);
+        }
+    };
+
     useEffect(() => {
 
         const getProductDetail = async () => {
             try {
+                console.log(id)
                 const response = await axios.get(`http://localhost:8000/api/v1/products/${id}`)
                 if (response.data.success) {
                     setProduct(response.data.product)
@@ -76,7 +105,7 @@ const ProductPageById = () => {
 
     if (!product) {
         return (
-            <div className="container max-w-7x1 mx-auto px-4 py-10">
+            <div className="max-w-7x1 mx-auto px-10 py-10">
 
                 <div role="status" className="flex justify-center items-center">
                     <svg
@@ -105,7 +134,7 @@ const ProductPageById = () => {
     return (
 
 
-        <div className="max-w-7xl mx-auto px-4 py-10">
+        <div className="max-w-7xl mx-auto px-10 py-10">
             <MetaData title={`${product.name}`} />
             <div className="flex flex-wrap">
                 <div className="w-full md:w-1/2">
@@ -150,7 +179,12 @@ const ProductPageById = () => {
                         <label htmlFor="quantity" className="text-lg font-semibold">
                             Quantity:
                         </label>
-                        <input id="quantity" type="number" min="1" step="1" className="shadow-sm border p-2 w-full md:w-auto" />
+                        <input
+                            onChange={handleQuantityChange}
+                            id="quantity"
+                            type="number"
+                            min="1" step="1"
+                            className="shadow-sm border p-2 w-full md:w-auto" />
                     </div>
 
                     <div className="relative flex flex-col md:flex-row items-start md:items-center space-y-2 md:space-y-0 md:space-x-2 w-full md:w-auto">
@@ -161,8 +195,8 @@ const ProductPageById = () => {
                         <select
                             className="block appearance-none border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-50"
                             value={unit} onChange={(e) => setUnit(e.target.value)}>
-                            <option>Kilograms</option>
-                            <option>Tons</option>
+                            <option value="kilograms">Kilograms</option>
+                            <option value="tons">Tons</option>
                             {/* Add more options as needed */}
                         </select>
 
@@ -172,14 +206,14 @@ const ProductPageById = () => {
                     </div>
 
 
-                    <div className="relative flex flex-col md:flex-row items-start md:items-center space-y-2 md:space-y-0 md:space-x-2 w-full md:w-auto">
+                    <div className="relative flex flex-col md:flex-row items-start md:items-center space-y-2 md:space-y-0 md:space-x-2 w-full md:w-auto border">
                         <label htmlFor="delivery-schedule" className="block text-lg font-semibold">
                             Delivery Schedule:
                         </label>
                         <select id="delivery-schedule" value={deliverySchedule} onChange={(e) => setDeliverySchedule(e.target.value)} className="appearance-none border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-50">
-                            <option>One-time</option>
-                            <option>Weekly</option>
-                            <option>Monthly</option>
+                            <option value="One-time">One-time</option>
+                            <option value="Weekly">Weekly</option>
+                            <option value="Monthly">Monthly</option>
                             {/* Add more options as needed */}
                         </select>
 
@@ -188,7 +222,7 @@ const ProductPageById = () => {
                         </div>
                     </div>
 
-                    <button className="w-full md:w-auto bg-[#28844b] hover:bg-[#28844bef] text-white font-bold py-2 px-4 rounded">
+                    <button onClick={requestForQuote} className="w-full md:w-auto bg-[#28844b] hover:bg-[#28844bef] text-white font-bold py-2 px-4 rounded">
                         Request Quote
                     </button>
                 </div>

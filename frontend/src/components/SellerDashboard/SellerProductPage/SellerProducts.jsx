@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react";
-import useAuthentication from "../../../../hooks/auth/useAuthentication";
-import DashboardProfileMenu from "../../../Users/ProfileDropDownMenu/DashboardProfileMenu";
+import useAuthentication from "../../../hooks/auth/useAuthentication";
+import DashboardProfileMenu from "../../Users/ProfileDropDownMenu/DashboardProfileMenu";
 import SellerProductList from "./SellerProductList";
-import MetaData from "../../../../app/MetaData";
-import useUserDetails from '../../../../hooks/users/useUserDetails'
-import Alert from "../../../Alert/Alert";
+import MetaData from "../../../app/MetaData";
+import useUserDetails from '../../../hooks/users/useUserDetails'
+import Alert from "../../Alert/Alert";
 
 
 const SellerProducts = () => {
@@ -46,7 +46,7 @@ const SellerProducts = () => {
             )
             : (
 
-                <div className="flex flex-col flex-grow overflow-auto ">
+                <div className="flex flex-col flex-grow overflow-auto">
                     {alert && <Alert type={alert.type} message={alert.message} onClose={closeAlert} />}
 
                     <MetaData title={`${user?.user?.email}`} />

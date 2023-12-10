@@ -13,6 +13,7 @@ const HomePage = () => {
             <MetaData title="Home | Ziraat B2B"/>
             <Header />
             <CategoryBrowser />
+            <FeaturedProducts />
             <Footer />
         </Fragment>
     )

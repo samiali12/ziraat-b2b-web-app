@@ -13,7 +13,8 @@ const CategoryBrowser = () => {
     return (
         <div className="mx-auto max-w-7xl py-5 px-10 mt-5">
             <h2 className="
-            text-[#404145] text-[32px] font-bold text-center py-5">Browse By Categories</h2>
+            text-[#404145] text-[28px] font-bold text-center py-5">Browse By <span className="text-[#28844b] font-sans italic">
+                    Categories</span></h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 py-5">
                 {categories.map((category) => (
                     <CategoryCard key={category.id} productCategory={category} />

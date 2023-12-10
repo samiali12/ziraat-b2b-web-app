@@ -16,7 +16,23 @@ const middleware = [...getDefaultMiddleware({
 
 export const getAllProducts = createAsyncThunk("products/fetch", async (thunkApi) => {
     try {
+        
         return await productsCRUDServices.getAllProducts()
+    } catch (error) {
+        const message = (
+            error.response &&
+            error.response.data &&
+            error.response.data.message) ||
+            error.message ||
+            error.toString()
+        return thunkApi.rejectWithValue(message)
+    }
+})
+
+export const getProductByCategory = createAsyncThunk("products/category", async (categoryName, thunkApi) => {
+    try {
+        
+        return await productsCRUDServices.getProductByCategory(categoryName)
     } catch (error) {
         const message = (
             error.response &&
@@ -86,6 +102,21 @@ export const productSlice = createSlice({
                 state.products = action.payload
             })
             .addCase(getAllProducts.rejected, (state, action) => {
+                state.isLoading = false
+                state.isSuccess = false
+                state.isError = true
+                state.products = action.payload
+            })
+            .addCase(getProductByCategory.pending, (state) => {
+                state.isLoading = true
+            })
+            .addCase(getProductByCategory.fulfilled, (state, action) => {
+                state.isLoading = false
+                state.isSuccess = true
+                state.isError = false
+                state.products = action.payload
+            })
+            .addCase(getProductByCategory.rejected, (state, action) => {
                 state.isLoading = false
                 state.isSuccess = false
                 state.isError = true

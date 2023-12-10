@@ -1,7 +1,7 @@
 import { useParams } from "react-router-dom";
 import React, { useEffect, useState, } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getAllProducts } from "../../features/productCRUDFeatures/productCRUDSlice";
+import { getProductByCategory } from "../../features/productCRUDFeatures/productCRUDSlice";
 import { resetProduct } from "../../features/productCRUDFeatures/productCRUDSlice";
 import ProductCard from "../Product/ProductCard";
 
@@ -14,17 +14,17 @@ const CategoryProductExplore = () => {
 
     useEffect(() => {
 
-        dispatch(getAllProducts())
-
+        dispatch(getProductByCategory(categoryName.categoryName))
+ 
         if (isSuccess) {
             setProducts(products.productsData)
-        }
-
-        dispatch(resetProduct())
-    }, [dispatch, isSuccess])
+        
+          }
+      
+    }, [isSuccess, products])
 
     return (
-        <div className="container max-w-7x1 mx-auto px-4 py-10">
+        <div className="container max-w-7x1 mx-auto px-10 py-10">
             <h2 className="text-[#404145] text-[24px] font-bold  py-5">Category "{categoryName.categoryName}"</h2>
 
 
