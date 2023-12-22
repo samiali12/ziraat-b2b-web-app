@@ -27,6 +27,9 @@ import SearchProductPage from './pages/SearchProductsPage';
 import SellerDashboardPage from './pages/SellerDashboardPages/SellerDashboardPage';
 import SellerProductsPage from './pages/SellerDashboardPages/SellerProductsPage';
 import SellerRFQSPage from './pages/SellerDashboardPages/SellerRFQSPage';
+import ProductsCartPage from './pages/ProductCartPage';
+import CheckoutPage from './pages/CheckoutPage';
+import PaymentSuccessPage from './pages/PaymentSuccessPage';
 
 
 function App() {
@@ -53,9 +56,14 @@ function AppContent() {
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/home" element={<HomePage />} />
+
           <Route path="/services" element={<ServicesPage />} />
           <Route path="/products" element={<ProductsPage />} />
           <Route path="/product/:id" element={<ProductPage />} />
+          <Route path="/products/cart" element={<ProductsCartPage />} />
+          <Route path="/cart/checkout" element={<CheckoutPage />} />
+          <Route path="/cart/checkout/payment-successfully" element={<PaymentSuccessPage />} />
+
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/verify-email/:email" element={<EmailVerification />} />

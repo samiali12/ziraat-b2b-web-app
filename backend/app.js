@@ -4,10 +4,13 @@ console.log('Temporary directory:', os.tmpdir());
 
 const productsRoute = require("./routes/productRoutes");
 const userRoutes = require("./routes/userRoutes");
-const requestQuoteRoute = require('./routes/requestQuoteRoute')
+const cartRoutes = require('./routes/cartRoutes')
 const authRoute = require('./routes/authRoutes');
 const searchRoute = require('./routes/searchRoute')
 const ImageUploadrouter = require("./routes/imageUploadRoutes");
+const stripeCheckoutRoute = require('./routes/stripeCheckoutRoute')
+const salesRoute = require('./routes/salesRoutes')
+const orderRoute = require('./routes/orderRoute')
 
 const errorHandlerMiddleware = require('./middleware/error');
 const cookieParser = require('cookie-parser');
@@ -20,7 +23,7 @@ const passport = require('passport');
 const multer = require('multer');
 const fileUploader = require('express-fileupload')
 
-
+const stripe = require('./stripe')
 
 
 // Express Middleware Configuration
@@ -76,13 +79,22 @@ app.use("/api/v1", userRoutes);
 // Mount 'authRoute' middleware under the "/api/v1" path.
 app.use("/api/v1/", authRoute);
 
-// Mount 'request-quote' middle under the '/api/v1/' path
-app.use("/api/v1/", requestQuoteRoute)
+// Mount 'Add to cart'  middleware
+app.use('/api/v1/', cartRoutes)
 
+app.use("/api/v1", stripeCheckoutRoute )
 // Mount File uploading middleware under the "/api/v1/" path. 
 app.use("/api/v1/", ImageUploadrouter);
 
 app.use('/api/v1', searchRoute)
+
+app.use('/api/v1',salesRoute)
+
+app.use('/api/v1', orderRoute)
+
+
+// Mount stripe 
+app.use(stripe)
 
 // Export the configured Express application to be used elsewhere.
 module.exports = app;

@@ -36,6 +36,7 @@
     "passport": "^0.6.0",
     "passport-local": "^1.0.0",
     "react-icons": "^4.11.0",
+    "stripe": "^14.9.0",
     "uuid": "^9.0.0",
     "validator": "^13.9.0",
     "websocket": "^1.0.34"

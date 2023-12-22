@@ -39,7 +39,7 @@ const SummaryWidget = ({ heading, amount, percentage, value, color }) => {
       <div className="bg-white w-64 p-6 shadow-md flex justify-between items-stretch gap-0 ">
          <div className="flex flex-col">
             <h2 className="text-sm">{heading}</h2>
-            <h2 className="text-lg font-semibold">{amount ? `$ ${value}` : value} </h2>
+            <h2 className="text-lg font-semibold">{amount ? `PKR ${value}` : value} </h2>
             {
                (percentage > 0) ?
                   (

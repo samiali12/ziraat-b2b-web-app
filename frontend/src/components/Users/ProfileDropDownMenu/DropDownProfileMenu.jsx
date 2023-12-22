@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { Disclosure, Menu, Transition } from '@headlessui/react'
 import { Bars3Icon, BellIcon, XMarkIcon, } from '@heroicons/react/24/outline'
 import React, { Fragment, createContext, useEffect, useState } from 'react'
@@ -6,6 +6,11 @@ import { useDispatch, useSelector } from 'react-redux'
 import { logoutUser } from '../../../features/authFeatures/authSlice'
 import { getUserDetails } from '../../../features/UserManagementFeatures/userManageSlice'
 import axios from 'axios'
+import { FaCartPlus } from "react-icons/fa";
+import { CiShoppingCart } from "react-icons/ci";
+import { useCart } from '../../../context/CartContext'
+
+
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
@@ -16,11 +21,15 @@ const imagePlaceHolder = 'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wC
 
 const DropdownProfileMenu = ({ userId, isDashboard }) => {
 
+  const navigate = useNavigate()
+  const {cart, addToCart} = useCart()
   
   const { user, isError, isSuccess, isLoading, message } = useSelector(state => state.userManage.user) || {}
   const [isEmptyImageURL, setIsEmptyImageURL] = useState(true)
   const dispatch = useDispatch()
   
+
+
 
   useEffect(() => {
 
@@ -39,6 +48,7 @@ const DropdownProfileMenu = ({ userId, isDashboard }) => {
     getUser()
   }, [])
 
+
   const logoutUser = async () => {
      const response = await axios.get("http://localhost:8000/api/v1/users/logout")
      window.location.reload()
@@ -48,6 +58,21 @@ const DropdownProfileMenu = ({ userId, isDashboard }) => {
 
     <div className="flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
       <Link to="/seller/dashboard" className="text-[#28844b] text-lg font-semibold mr-2">Switch selling</Link>
+      <button
+      onClick={() => navigate("/products/cart")}
+        type="button"
+        className="relative rounded-full  p-1 text-gray-400 hover:text-[#28844b] focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
+      >
+         <span className="absolute -inset-1.5">
+        {cart.length >= 0 && (
+          <span className="bg-[#28844b] text-white rounded-full px-2 py-1 text-xs absolute top-1.5 right-3 transform translate-x-1/2 -translate-y-1/2">
+            {cart.length}
+          </span>
+        )}
+      </span>
+        <span className="sr-only">Add Cart</span>
+        <CiShoppingCart onClick={addToCart} className="h-6 w-6" aria-hidden="true" />
+      </button>
       <button
         type="button"
         className="relative rounded-full  p-1 text-gray-400 hover:text-[#28844b] focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"

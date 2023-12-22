@@ -107,7 +107,7 @@ const Login = () => {
                                             Password
                                         </label>
                                         <div className="text-sm">
-                                            <Link to="" className="font-semibold text-[#28844b]">
+                                            <Link to="/password-reset/" className="font-semibold text-[#28844b]">
                                                 Forgot password?
                                             </Link>
                                         </div>
@@ -139,7 +139,7 @@ const Login = () => {
                                         type="submit"
                                         className={` ${isLoading ? 'hidden' : ''} flex w-full justify-center rounded-md bg-[#28844b]  px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600`}
                                     >
-                                        Sign in
+                                        Login
                                     </button>
 
                                     <button

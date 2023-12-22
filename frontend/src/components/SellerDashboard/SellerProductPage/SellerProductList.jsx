@@ -139,16 +139,16 @@ const SellerProductList = ({ setFlag }) => {
         <table className="border-collapse table-auto w-full whitespace-no-wrap bg-white table-striped relative">
           <thead>
             <tr className="text-left">
-              <th className="py-2 px-3 sticky top-0 border-b border-gray-200 bg-gray-100">
+              <th className="py-2 px-3 sticky top-0 border-b border-gray-200 bg-white">
                 Name
               </th>
-              <th className="py-2 px-3 sticky top-0 border-b border-gray-200 bg-gray-100">
+              <th className="py-2 px-3 sticky top-0 border-b border-gray-200 bg-white">
                 Price
               </th>
-              <th className="py-2 px-3 sticky top-0 border-b border-gray-200 bg-gray-100">
+              <th className="py-2 px-3 sticky top-0 border-b border-gray-200 bg-white">
                 Description
               </th>
-              <th className="py-2 px-3 sticky top-0 border-b border-gray-200 bg-gray-100">
+              <th className="py-2 px-3 sticky top-0 border-b border-gray-200 bg-white">
                 Actions
               </th>
             </tr>

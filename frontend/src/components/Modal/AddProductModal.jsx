@@ -17,7 +17,7 @@ const AddProductModal = ({ setFlag, open, onClose, onSubmit }) => {
     description: "",
     images: [],
     category: "",
-    stock: 0,
+    stock: null,
   });
 
   let { isLoading, isSuccess, isError, products } = useSelector(state => state.product)
@@ -35,7 +35,7 @@ const AddProductModal = ({ setFlag, open, onClose, onSubmit }) => {
 
   const showAlert = (type, message) => {
     setAlert({ type, message });
-    
+
   };
 
   const closeAlert = () => {
@@ -111,7 +111,7 @@ const AddProductModal = ({ setFlag, open, onClose, onSubmit }) => {
 
     if (isSuccess && !(isLoading === false)) {
       setFlag('success')
-     onClose()
+      onClose()
     }
 
     if (isError) {
@@ -120,6 +120,7 @@ const AddProductModal = ({ setFlag, open, onClose, onSubmit }) => {
     }
   }, [isSuccess, isLoading, isError, products])
 
+ 
 
   return (
 
@@ -136,7 +137,7 @@ const AddProductModal = ({ setFlag, open, onClose, onSubmit }) => {
           className="relative w-full max-w-3xl p-4 mx-auto bg-white rounded-md shadow-lg  "
           onSubmit={handleSubmit} // Call the handleSubmit function when the form is submitted
         >
-         
+
           <div className="flex items-start justify-between p-5 border-b border-solid border-gray-200 rounded-t">
 
 
@@ -197,7 +198,13 @@ const AddProductModal = ({ setFlag, open, onClose, onSubmit }) => {
               />
 
               <label className="block text-gray-700 text-sm font-bold mb-2">
-                Stock
+                Stock {
+                  product.stock >= 1000 ? (
+                    <span> (Tons = {product.stock / 1000})</span>
+                  ) : (
+                    <span> (Kilogram = {product.stock})</span>
+                  )
+                }
               </label>
 
               <label className="block text-gray-700 text-sm font-bold mb-2">
@@ -219,8 +226,10 @@ const AddProductModal = ({ setFlag, open, onClose, onSubmit }) => {
                 onChange={handleCategoryChange}
                 className='shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'>
                 <option value="">Select a category</option>
-                <option value="Seeds">Seeds</option>
-                <option value="Bio Products">Bio Products</option>
+                <option value="Rice">Rice</option>
+                <option value="Sugarcane">Sugarcane</option>
+                <option value="Cotton">Cotton</option>
+                <option value="Wheat">Wheat</option>
               </select>
 
 
@@ -270,7 +279,7 @@ const AddProductModal = ({ setFlag, open, onClose, onSubmit }) => {
               font-bold uppercase text-sm px-6 py-3 rounded shadow 
               hover:shadow-lg outline-none focus:outline-none
                mr-1 mb-1 ease-linear transition-all duration-150`}
-                // Set the button type to submit
+              // Set the button type to submit
               >
                 <svg aria-hidden="true" role="status" className="inline w-4 h-4 mr-3 text-white animate-spin" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="#E5E7EB" />

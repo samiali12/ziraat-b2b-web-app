@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import RatingStars from '../ratings/Rating';
 
 
+
 const ProductCard = ({ product }) => {
 
 
@@ -20,8 +21,8 @@ const ProductCard = ({ product }) => {
                     <h3 className="text-ls text-gray-700 font-semibold mb-1">{product.name}</h3>
                     <p className="text-gray-600 mb-1">{product.category}</p>
                     <div className="flex items-center justify-between mb-2">
-                        <p className="text-gray-800 text-lg font-semibold mt-4">${product.price}</p>
-                        <RatingStars ratings={3.2} />
+                        <p className="text-gray-800 text-lg font-semibold mt-4">PKR {product.price}</p>
+                        <RatingStars ratings={product.rating} />
                     </div>
 
                 </div>

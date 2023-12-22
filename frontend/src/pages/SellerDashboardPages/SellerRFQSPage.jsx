@@ -2,6 +2,7 @@ import useAuthentication from "../../hooks/auth/useAuthentication";
 import useUserDetails from "../../hooks/users/useUserDetails";
 import MetaData from '../../app/MetaData';
 import DashboardProfileMenu from "../../components/Users/ProfileDropDownMenu/DashboardProfileMenu";
+import SellerRFQPage from "../../components/SellerDashboard/SellerRFQPage/SellerRFQPage";
 
 const SellerRFQSPage = () => {
 
@@ -23,6 +24,9 @@ const SellerRFQSPage = () => {
                             <DashboardProfileMenu userId={userId} />
                         </div>
                     </div >
+                    <div className="mx-10 my-6">
+                        <SellerRFQPage userId={userId}/>
+                    </div>
                 </div>
             )
     )

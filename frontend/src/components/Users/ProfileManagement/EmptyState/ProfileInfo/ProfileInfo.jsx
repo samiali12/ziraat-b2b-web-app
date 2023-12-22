@@ -59,8 +59,6 @@ const ProfileInfo = () => {
                 const imageData = new FormData()
                 imageData.append("file", imageFile)
 
-                console.log(imageData)
-
                 // Use Axios for the POST request
                 const cloudinaryResponse = await axios.post('http://localhost:8000/api/v1/cloudinary-upload', imageData, {
                     headers: {

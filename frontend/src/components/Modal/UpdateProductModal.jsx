@@ -126,7 +126,7 @@ const UpdateProductModal = ({ open, onClose, productId, setUpdateFlag }) => {
                 const response = await axios.get(`http://localhost:8000/api/v1/products/${productId}`)
                 if (response.data.success) {
                     setProduct(response.data.product)
-                  
+
                 }
             } catch (error) {
 
@@ -245,8 +245,10 @@ const UpdateProductModal = ({ open, onClose, productId, setUpdateFlag }) => {
                                 onChange={handleCategoryChange}
                                 className='shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'>
                                 <option value="">Select a category</option>
-                                <option value="Seeds">Seeds</option>
-                                <option value="Bio Products">Bio Products</option>
+                                <option value="Rice">Rice</option>
+                                <option value="Sugarcane">Sugarcane</option>
+                                <option value="Cotton">Cotton</option>
+                                <option value="Wheat">Wheat</option>
                             </select>
 
 

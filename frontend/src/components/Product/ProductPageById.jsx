@@ -7,42 +7,25 @@ import RatingStars from "../ratings/Rating";
 import ReviewsSection from "../ratings/Review";
 import Review from "../ratings/Review";
 import axios from "axios";
-
+import useAuthentication from '../../hooks/auth/useAuthentication'
+import { useCart } from "../../context/CartContext";
+import { useToaster } from 'react-hot-toast';
 
 const ProductPageById = () => {
 
+    const { cart, addToCart} = useCart();
 
-    const fakeReviews = [
-        {
-            userName: 'John Doe',
-            userAvatar: 'url-to-avatar-image',
-            comment: "Discover the future of bountiful harvests with our premium-grade corn seeds. Specially selected for their superior quality and performance, our corn seeds are the top choice for farmers and growers. These seeds are meticulously bred and tested to ensure disease resistance, high yield potential, and exceptional taste. Whether you're a commercial farmer or a gardening enthusiast, our corn seeds will help you cultivate vibrant, healthy corn crops. Elevate your agricultural endeavors with the confidence that comes from planting the best. Buy our corn seeds today and watch your fields flourish",
-            rating: 5,
-            timestamp: new Date('2023-09-15T12:00:00Z').getTime(), // Use a timestamp in milliseconds
-        },
-        {
-            userName: 'Jane Smith',
-            userAvatar: 'url-to-avatar-image',
-            comment: 'Great value for the price.',
-            rating: 4,
-            timestamp: new Date('2023-09-14T14:30:00Z').getTime(),
-        },
-        {
-            userName: 'Alice Johnson',
-            userAvatar: 'url-to-avatar-image',
-            comment: 'Not bad, but could be better.',
-            rating: 3,
-            timestamp: new Date('2023-09-12T09:15:00Z').getTime(),
-        },
-        // Add more fake reviews as needed
-    ];
+    const dispatch = useDispatch()
+   
+    const { id } = useParams(); // Get the product id from the URL params
+    const { authenticated, userId } = useAuthentication();
+   
+    const [reviews, setReviews] = useState([])
 
     const [quantity, setQuantity] = useState(1); // Initial quantity state
     const [unit, setUnit] = useState('Kilograms');
     const [deliverySchedule, setDeliverySchedule] = useState('One-time');
 
-    const dispatch = useDispatch()
-    const { id } = useParams(); // Get the product id from the URL params
     const [product, setProduct] = useState(null); // Initialize the product state to null
 
     const [selectedImage, setSelectedImage] = useState(null);
@@ -61,29 +44,6 @@ const ProductPageById = () => {
     const handleQuantityChange = (event) => {
         // Update the quantity state when the input changes
         setQuantity(parseInt(event.target.value, 10)); // Parse input value to an integer
-    };
-
-    const requestForQuote = async() => {
-
-        try {
-            const requestData = {
-                productId: product._id,
-                quantity,
-                unit,
-                deliverySchedule,
-                // Add other necessary fields
-            };
-
-            const response = await axios.post('http://localhost:8000/api/v1/quote-request', requestData);
-
-            if (response.data.success) {
-                // Handle success, show confirmation, etc.
-                console.log('Quote request sent successfully');
-            }
-        } catch (error) {
-            // Handle error
-            console.error('Error sending quote request:', error);
-        }
     };
 
     useEffect(() => {
@@ -222,8 +182,8 @@ const ProductPageById = () => {
                         </div>
                     </div>
 
-                    <button onClick={requestForQuote} className="w-full md:w-auto bg-[#28844b] hover:bg-[#28844bef] text-white font-bold py-2 px-4 rounded">
-                        Request Quote
+                    <button onClick={ () => addToCart({product, quantity, unit, deliverySchedule,totalPrice: quantity*product.price})} className="w-full md:w-auto bg-[#28844b] hover:bg-[#28844bef] text-white font-bold py-2 px-4 rounded">
+                        Add to Cart
                     </button>
                 </div>
 
@@ -232,7 +192,7 @@ const ProductPageById = () => {
             <div className="max-w-7xl mx-auto mt-10 px-4">
                 <h2 className="text-small font-semibold uppercase py-10">Recent Reviews</h2>
                 {
-                    fakeReviews.map((review) => (
+                    reviews?.map((review) => (
                         <Review key={review.userName} reviewer={review.userName} comment={review.comment} rating={review.rating} time={review.timestamp} />
                     ))
                 }
